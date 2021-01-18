@@ -27,6 +27,8 @@
         <activity android:name=".GuidelineActivity2"></activity>
         <activity android:name=".GuidelineActivity3"></activity>
         <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".CalendarActivity"></activity>
+        <activity android:name=".AddScheduleActivity"></activity>
     </application>
 
 </manifest>
