@@ -19,8 +19,6 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="@color/black"
-        app:lineSpacingExtra="14sp"
-        app:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
