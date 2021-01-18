@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">WeMeet레이아웃</string>
+    <string name="wemeet_logo">wemeet_logo</string>
+    <string name="login_button">login_button</string>
+    <string name="welcome">welcome</string>
+    <string name="group_calendar">group_calendar</string>
+    <string name="group_2">group_2</string>
+    <string name="group_1">group_1</string>
+    <string name="plus_button">plus_button</string>
+    <string name="option_button">option_button</string>
+    <string name="next_button">next_button</string>
+    <string name="guide1">guide1</string>
+    <string name="guide2">guide2</string>
+    <string name="my_calendar">my_calendar</string>
+    <string name="white_background">white_background</string>
+    <string name="title">tittle</string>
+    <string name="white_background_line">white_background_line</string>
+    <string name="wemeet">TODO</string>
+
+</resources>
+
