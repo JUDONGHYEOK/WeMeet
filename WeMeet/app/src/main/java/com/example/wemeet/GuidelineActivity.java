@@ -2,6 +2,9 @@ package com.example.wemeet;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +18,7 @@ import java.util.ArrayList;
 public class GuidelineActivity extends FragmentActivity {
     private static final int NUM_PAGES=3;
     private ViewPager2 mPager;
+    Button imageButton;
 
 
     @Override
@@ -32,7 +36,21 @@ public class GuidelineActivity extends FragmentActivity {
         TabFragment3 fragment3=new TabFragment3();
         pagerAdapter.addItem(fragment3);
         mPager.setAdapter(pagerAdapter);
+
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        imageButton = (Button) findViewById(R.id.guide1);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPager.setCurrentItem(mPager.getCurrentItem() + 1);
+            }
+        });
+    }
+
     @Override
     public void onBackPressed() {
         if (mPager.getCurrentItem() == 0) {

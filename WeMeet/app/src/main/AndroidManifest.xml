@@ -12,12 +12,17 @@
         android:theme="@style/Theme.WeMeet레이아웃">
         <activity android:name=".SplashActivity">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter></activity>
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".GuidelineActivity"></activity>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            </activity>
+        <activity android:name=".MainActivity">
+
+        </activity>
+        <activity android:name=".GuidelineActivity">
+
+        </activity>
         <activity android:name=".GuidelineActivity1"></activity>
         <activity android:name=".GuidelineActivity2"></activity>
         <activity android:name=".GuidelineActivity3"></activity>

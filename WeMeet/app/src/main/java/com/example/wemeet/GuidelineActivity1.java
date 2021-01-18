@@ -3,6 +3,7 @@ package com.example.wemeet;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
@@ -23,7 +24,7 @@ public class GuidelineActivity1 extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.guideline1);
-        ImageButton imageButton1=(ImageButton)findViewById(R.id.guide1);
+        Button imageButton1=(Button)findViewById(R.id.guide1);
         imageButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
