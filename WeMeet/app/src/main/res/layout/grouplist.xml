@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:fontFamily="@font/futura_bold"
+        android:text="Group Calendar"
+        android:textColor="#000000"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+
+        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/Recyclerview_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" >
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <LinearLayout
+
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="20dp"
+                android:paddingTop="10dp"
+                >
+
+                <Button
+                    android:id="@+id/Button_addGroup"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/plus_button" />
+
+                <TextView
+                    android:id="@+id/TextView_addGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="13dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="sans-serif"
+                    android:text="그룹 추가하기"
+                    android:textColor="#000000"
+                    android:textSize="10dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
+
+    <!--<Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:background="@drawable/group_1"
+        app:layout_constraintTop_toTopOf="@+id/TextView_addGroup"
+
+        />-->
