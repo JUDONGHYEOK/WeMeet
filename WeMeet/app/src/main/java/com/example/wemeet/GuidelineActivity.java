@@ -1,5 +1,6 @@
 package com.example.wemeet;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 public class GuidelineActivity extends FragmentActivity {
     private static final int NUM_PAGES=3;
     private ViewPager2 mPager;
-    Button imageButton;
+
 
 
     @Override
@@ -42,13 +43,19 @@ public class GuidelineActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        imageButton = (Button) findViewById(R.id.guide1);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPager.setCurrentItem(mPager.getCurrentItem() + 1);
-            }
-        });
+
+    }
+    public void nextFragment(){
+        if(mPager.getCurrentItem()!=NUM_PAGES){
+            mPager.setCurrentItem(mPager.getCurrentItem()+1);
+        }else{
+
+        }
+    }
+    public void toLoginActivity(){
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivityForResult(intent, 101);
+        finish();
     }
 
     @Override
