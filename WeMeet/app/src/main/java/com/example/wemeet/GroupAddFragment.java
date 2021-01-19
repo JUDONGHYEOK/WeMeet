@@ -65,7 +65,7 @@ public class GroupAddFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String mb= member.getText().toString();
-               adapter.addItem(mb);
+               adapter.addItem(mb+"@gmail.com");
                member.setText("");
 
             }
