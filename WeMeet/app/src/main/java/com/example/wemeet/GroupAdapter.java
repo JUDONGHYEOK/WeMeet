@@ -61,8 +61,11 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         public void setItem(GroupData group){
             GroupName.setText(group.GroupName);
             int NumberOfPeople=group.getMembers().size();
-            GroupPerson.setText(group.getMember(1)+"외 "+(NumberOfPeople-1)+"명");
-
+            if(NumberOfPeople>=2) {
+                GroupPerson.setText(group.getMember(0).replaceAll("@gmail.com"," ") + "외 " + (NumberOfPeople - 1) + "명");
+            }else{
+                GroupPerson.setText(group.getMember(0));
+            }
 
         }
     }

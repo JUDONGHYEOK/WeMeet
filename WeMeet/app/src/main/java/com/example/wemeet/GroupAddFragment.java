@@ -78,7 +78,7 @@ public class GroupAddFragment extends Fragment {
 
 
                 String gn=groupName.getText().toString();
-                if(gn.trim()!=""){
+                if(!gn.trim().isEmpty()&&!list.isEmpty()){
                 ArrayList<String> members=new ArrayList<String>();
                 members=adapter.getItems();
                 Log.d("101",gn);
@@ -92,7 +92,11 @@ public class GroupAddFragment extends Fragment {
                     Toast.makeText(view.getContext(),iter.next(),Toast.LENGTH_SHORT).show();
                 }*/
                 view.setVisibility(View.INVISIBLE);
-            }
+            }else if(gn.trim().isEmpty()){
+                    Toast.makeText(getActivity(),"그룹 이름을 입력하세요",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getActivity(),"그룹 원을 추가하세요",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
