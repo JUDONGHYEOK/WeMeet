@@ -1,5 +1,6 @@
 package com.example.wemeet;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -8,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 
 public class MainActivityTest extends FragmentActivity {
     BottomNavigationView bottomNavigationView;
@@ -15,31 +19,24 @@ public class MainActivityTest extends FragmentActivity {
     GroupFragment group;
     CalendarFragment calendar;
     SettingFragment setting;
-
+    private FirebaseAuth mAuth ;
+    private String providerId;
+    private String uid;
+    private String name;
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        /*
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        */
         setContentView(R.layout.main);
         bottomNavigationView = findViewById(R.id.navigationBar);
-
-
         group = new GroupFragment();
         setting = new SettingFragment();
         calendar = new CalendarFragment();
-
-
-
-
+        mAuth = FirebaseAuth.getInstance();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment, calendar).commitAllowingStateLoss();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()){
@@ -59,7 +56,21 @@ public class MainActivityTest extends FragmentActivity {
                 }
             }
         });
-
-
+    }
+    public String userId(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            for (UserInfo profile : user.getProviderData()) {
+                // Id of the provider (ex: google.com)
+                providerId = profile.getProviderId();
+                // UID specific to the provider
+                uid = profile.getUid();
+                // Name, email address, and profile photo Url
+                name = profile.getDisplayName();
+                email = profile.getEmail();
+                Uri photoUrl = profile.getPhotoUrl();
+            }
+        }
+        return email;
     }
 }

@@ -10,13 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class MainViewAdapter extends RecyclerView.Adapter<MainViewAdapter.ViewHolder> {
+public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> {
     Context context;
     ArrayList<GroupData>items=new ArrayList<>();
 
-    public MainViewAdapter(Context context,ArrayList<GroupData> data) {
+    public GroupAdapter(Context context, ArrayList<GroupData> data) {
         this.context=context;
         this.items=data;
     }
@@ -61,7 +60,9 @@ public class MainViewAdapter extends RecyclerView.Adapter<MainViewAdapter.ViewHo
 
         public void setItem(GroupData group){
             GroupName.setText(group.GroupName);
-            GroupPerson.setText(group.Groups);
+            int NumberOfPeople=group.getMembers().size();
+            GroupPerson.setText(group.getMember(1)+"외 "+(NumberOfPeople-1)+"명");
+
 
         }
     }

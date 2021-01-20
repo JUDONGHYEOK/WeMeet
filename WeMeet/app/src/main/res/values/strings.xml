@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WeMeet레이아웃</string>
+    <string name="app_name">WeMeet</string>
     <string name="wemeet_logo">wemeet_logo</string>
     <string name="login_button">login_button</string>
     <string name="welcome">welcome</string>

@@ -13,7 +13,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -73,16 +75,22 @@ public class GroupAddFragment extends Fragment {
         group.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+
+
                 String gn=groupName.getText().toString();
                 if(gn.trim()!=""){
                 ArrayList<String> members=new ArrayList<String>();
                 members=adapter.getItems();
                 Log.d("101",gn);
-                Toast.makeText(view.getContext(),gn,Toast.LENGTH_SHORT).show();
+                /*Toast.makeText(view.getContext(),gn,Toast.LENGTH_SHORT).show();*/
                 Iterator<String> iter=members.iterator();
-                while(iter.hasNext()){
+                Bundle result = new Bundle();
+                result.putStringArrayList("Members",members);
+                result.putString("GroupName",gn);
+                getParentFragmentManager().setFragmentResult("addGroup", result);
+               /* while(iter.hasNext()){
                     Toast.makeText(view.getContext(),iter.next(),Toast.LENGTH_SHORT).show();
-                }
+                }*/
                 view.setVisibility(View.INVISIBLE);
             }
             }

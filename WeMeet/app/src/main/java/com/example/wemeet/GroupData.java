@@ -1,14 +1,16 @@
 package com.example.wemeet;
 
+import java.util.ArrayList;
+
 public class GroupData {
     public String GroupName;
-    public String Groups;
-    public int person;
+    public ArrayList<String> Members;
 
-    public GroupData(String groupName, String groups, int person) {
+
+    public GroupData(String groupName, ArrayList<String> Members) {
         GroupName = groupName;
-        Groups = groups;
-        this.person = person;
+        this.Members=Members;
+
     }
 
     public String getGroupName() {
@@ -19,19 +21,13 @@ public class GroupData {
         GroupName = groupName;
     }
 
-    public String getGroups() {
-        return Groups;
+    public ArrayList<String> getMembers() {
+        return Members;
     }
 
-    public void setGroups(String groups) {
-        Groups = groups;
+    public String getMember(int position){return Members.get(position);}
+    public void setMembers( ArrayList<String> members) {
+        Members = members;
     }
 
-    public int getPerson() {
-        return person;
-    }
-
-    public void setPerson(int person) {
-        this.person = person;
-    }
 }
