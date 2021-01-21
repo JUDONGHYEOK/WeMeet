@@ -60,6 +60,7 @@ public class GroupFragment extends Fragment {
             db = FirebaseFirestore.getInstance();}catch(Exception e){
             Toast.makeText(getActivity(), "연결 오류",Toast.LENGTH_LONG).show();
         }
+
         /*initDataset();*/
         /*mHandler=new Handler();
         new Thread(new Runnable(){
@@ -198,10 +199,6 @@ public class GroupFragment extends Fragment {
         String time1=format1.format(time);
 
         member.add(userId);
-       /* try{
-            db = FirebaseFirestore.getInstance();}catch(Exception e){
-            Toast.makeText(getActivity(), "연결 오류",Toast.LENGTH_LONG).show();
-        }*/
         group.put("groupName",groupName);
         group.put("groupMembers",member);
         group.put("date", time1.replaceAll("-","").replaceAll(":",""));
@@ -220,18 +217,5 @@ public class GroupFragment extends Fragment {
                     }
                 });
 
-    }
-    public class LoadData implements Runnable{
-
-        @Override
-        public void run() {
-            try{
-            initDataset();
-            }catch (Exception e){
-                e.printStackTrace();
-                Log.d("TAG","쓰레드 안됨"+e.toString());
-            }
-
-        }
     }
 }
