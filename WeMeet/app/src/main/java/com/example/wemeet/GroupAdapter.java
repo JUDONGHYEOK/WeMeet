@@ -1,9 +1,11 @@
 package com.example.wemeet;
 
 import android.content.Context;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,16 +53,33 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
     static class ViewHolder extends RecyclerView.ViewHolder{
         public TextView GroupName;
         public TextView GroupPerson;
+        public ImageView NumberOfMemebers;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             GroupName=(TextView)itemView.findViewById(R.id.groupName);
             GroupPerson=(TextView)itemView.findViewById(R.id.groupPerson);
+            NumberOfMemebers=(ImageView)itemView.findViewById(R.id.number_Member);
         }
 
         public void setItem(GroupData group){
             GroupName.setText(group.GroupName);
             int NumberOfPeople=group.getMembers().size();
+            switch(NumberOfPeople){
+                case 1:
+                    NumberOfMemebers.setImageResource(R.drawable.groupmember1);
+                    break;
+                case 2:
+                    NumberOfMemebers.setImageResource(R.drawable.groupmember2);
+                    break;
+                case 3:
+                    NumberOfMemebers.setImageResource(R.drawable.groupmember3);
+                    break;
+                default:
+                    NumberOfMemebers.setImageResource(R.drawable.groupmember4);
+                    break;
+            }
             if(NumberOfPeople>=2) {
                 GroupPerson.setText(group.getMember(0).replaceAll("@gmail.com"," ") + "외 " + (NumberOfPeople - 1) + "명");
             }else{

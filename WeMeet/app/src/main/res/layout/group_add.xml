@@ -72,6 +72,13 @@
             android:textColor="#ffffff"
             android:textColorHint="#ffffff"
             android:textSize="20dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\@gmail.com"
+            android:textColor="#ffffff"
+            android:textSize="15dp"
+            android:fontFamily="@font/roboto"/>
 
         <Button
             android:id="@+id/addMember"
