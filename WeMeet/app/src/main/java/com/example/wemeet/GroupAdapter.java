@@ -83,7 +83,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             if(NumberOfPeople>=2) {
                 GroupPerson.setText(group.getMember(0).replaceAll("@gmail.com"," ") + "외 " + (NumberOfPeople - 1) + "명");
             }else{
-                GroupPerson.setText(group.getMember(0));
+                GroupPerson.setText(group.getMember(0).replaceAll("@gmail.com",""));
             }
 
         }
