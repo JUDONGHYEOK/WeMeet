@@ -21,6 +21,10 @@
     <string name="group">Group</string>
     <string name="home">Home</string>
     <string name="setting">Setting</string>
+    <string name="cancle_btn">취소</string>
+    <string name="ok_btn">확인</string>
+
+
 
 </resources>
 
