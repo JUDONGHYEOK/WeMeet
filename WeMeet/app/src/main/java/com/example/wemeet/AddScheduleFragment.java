@@ -53,7 +53,6 @@ public class AddScheduleFragment extends Fragment {
     private TextView Timer1;
 
     private String datedb;
-    public CalendarDay cday;
 
     private String time;
     int hour,min;
@@ -63,8 +62,9 @@ public class AddScheduleFragment extends Fragment {
 
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
 
-    Date setDate;
+
     int syear, smonth, sday;
+    int ayear, amonth, aday;
 
     public AddScheduleFragment(){}
 
@@ -77,7 +77,7 @@ public class AddScheduleFragment extends Fragment {
                 int kyear = bundle.getInt("keyyear");
                 int kmonth = bundle.getInt("keymonth");
                 int kday = bundle.getInt("keyday");
-                // Do something with the result
+
                 syear= kyear;
                 smonth = kmonth;
                 sday = kday;
@@ -108,11 +108,6 @@ public class AddScheduleFragment extends Fragment {
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
             }
-            private void setDate(String year){
-
-                String styear = dateFormat.format(syear+smonth+sday);
-                showdate.setText(styear);
-            }
         });
 
 
@@ -126,7 +121,9 @@ public class AddScheduleFragment extends Fragment {
                 showdate.setText(date);
 
                 //달력으로 보낼 데이터
-                cday=CalendarDay.from(year,month,day);
+                ayear = year;
+                amonth = month;
+                aday = day;
             }
         };
 
@@ -190,8 +187,13 @@ public class AddScheduleFragment extends Fragment {
                 Eventsmap.put("User_Email", email);
                 Eventsmap.put("User_id", userid);
 
-                //등록 날짜 보내기
+                //일정 추가한 날짜를 달력 프레그먼트로 보내기
 
+              /*  Bundle adddates = new Bundle();
+                adddates.putInt("addyear", ayear);
+                adddates.putInt("addmonth", amonth);
+                adddates.putInt("addday", aday);
+                getParentFragmentManager().setFragmentResult("requestKey", adddates);*/
 
                 fStore.collection("Events").add(Eventsmap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -206,7 +208,6 @@ public class AddScheduleFragment extends Fragment {
                         Toast.makeText(getContext(),"Error : "+ error, Toast.LENGTH_SHORT).show();
                     }
                 });
-
 
 
                 //홈화면으로

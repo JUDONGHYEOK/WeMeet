@@ -1,8 +1,10 @@
 package com.example.wemeet;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.graphics.drawable.ColorDrawable;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -13,6 +15,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.DayViewDecorator;
+import com.prolificinteractive.materialcalendarview.DayViewFacade;
+import com.prolificinteractive.materialcalendarview.spans.DotSpan;
+
+import java.util.HashSet;
+import java.util.Collection;
 
 public class MainActivityTest extends FragmentActivity {
     BottomNavigationView bottomNavigationView;
@@ -28,6 +37,31 @@ public class MainActivityTest extends FragmentActivity {
     private String name;
     private String email;
     FirebaseFirestore db;
+
+    public static class DateDecorator implements DayViewDecorator {
+        private int color = 0;
+        private final HashSet<CalendarDay> dates;
+        private ColorDrawable drawable;
+        private Context context;
+
+        public DateDecorator(Context context, int color, Collection<CalendarDay> dates) {
+            this.context = context;
+            this.color = color;
+            this.dates = new HashSet<>(dates);
+            drawable = new ColorDrawable(color);
+        }
+
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            return dates.contains(day);
+        }
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.addSpan(new DotSpan(10, color));
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,4 +124,5 @@ public class MainActivityTest extends FragmentActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment, calendar).commit();
         }
     }
+
 }
