@@ -29,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,6 +53,8 @@ public class AddScheduleFragment extends Fragment {
     private TextView Timer1;
 
     private String datedb;
+    public CalendarDay cday;
+
     private String time;
     int hour,min;
 
@@ -70,10 +73,14 @@ public class AddScheduleFragment extends Fragment {
         getParentFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
-                // We use a String here, but any type that can be put in a Bundle is supported
-                int result = bundle.getInt("bundleKey");
+                // 달력에서 선택된 날짜 가져오기 위함 -> 탭을 바꿔야 적용되는 문제 발생
+                int kyear = bundle.getInt("keyyear");
+                int kmonth = bundle.getInt("keymonth");
+                int kday = bundle.getInt("keyday");
                 // Do something with the result
-                syear= result;
+                syear= kyear;
+                smonth = kmonth;
+                sday = kday;
             }
         });
     }
@@ -85,7 +92,7 @@ public class AddScheduleFragment extends Fragment {
 
         showdate = (TextView) rootView.findViewById(R.id.setDate);
 
-        showdate.setHint(syear+"3");
+        showdate.setHint(syear+"년"+smonth+"월"+sday+"일");
 
       //  Toast.makeText(getContext(),"?? "+caldate,Toast.LENGTH_SHORT).show();
 
@@ -96,20 +103,15 @@ public class AddScheduleFragment extends Fragment {
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
 
-                Date curdate = cal.getTime();
-                setDate(curdate);
-
                 DatePickerDialog dialog = new DatePickerDialog(
                         getContext(),android.R.style.Theme_Holo_Dialog_MinWidth, mDateSetListener, year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
             }
+            private void setDate(String year){
 
-            private void setDate(Date currentDate){
-                setDate = currentDate;
-
-                String setDatestr = dateFormat.format(currentDate);
-                showdate.setText(setDatestr);
+                String styear = dateFormat.format(syear+smonth+sday);
+                showdate.setText(styear);
             }
         });
 
@@ -122,6 +124,9 @@ public class AddScheduleFragment extends Fragment {
                 String date = year + "년" +(month +1 )+ "월" + day + "일";
                 datedb = year+"-"+(month+1)+"-"+day;
                 showdate.setText(date);
+
+                //달력으로 보낼 데이터
+                cday=CalendarDay.from(year,month,day);
             }
         };
 
@@ -185,6 +190,9 @@ public class AddScheduleFragment extends Fragment {
                 Eventsmap.put("User_Email", email);
                 Eventsmap.put("User_id", userid);
 
+                //등록 날짜 보내기
+
+
                 fStore.collection("Events").add(Eventsmap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
@@ -198,6 +206,12 @@ public class AddScheduleFragment extends Fragment {
                         Toast.makeText(getContext(),"Error : "+ error, Toast.LENGTH_SHORT).show();
                     }
                 });
+
+
+
+                //홈화면으로
+                MainActivityTest mainactivity = (MainActivityTest) getActivity();
+                mainactivity.FragmentChange(1);
             }
         });
     return rootView;

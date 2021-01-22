@@ -86,5 +86,8 @@ public class MainActivityTest extends FragmentActivity {
         if(index == 0) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment, addSchedule).commit();
         }
+        else if(index == 1){
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment, calendar).commit();
+        }
     }
 }

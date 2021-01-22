@@ -53,9 +53,7 @@ public class CalendarFragment extends Fragment {
                 startActivityForResult(intent, REQUEST_CODE_ADD);
                 intent.putExtra("cdate", materialCalendarView.getSelectedDate().getDay());*/
 
-                Bundle result = new Bundle();
-                result.putInt("bundleKey", syear);
-                getParentFragmentManager().setFragmentResult("requestKey", result);
+
 
 
                 MainActivityTest mainactivity = (MainActivityTest) getActivity();
@@ -71,7 +69,13 @@ public class CalendarFragment extends Fragment {
                 syear = date.getYear();
                 smonth = date.getMonth();
                 sday = date.getDay();
-                Toast.makeText(getContext(), syear+"오"+smonth+"예"+sday, Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), syear+"?"+smonth+"?"+sday, Toast.LENGTH_LONG).show();
+
+                Bundle result = new Bundle();
+                result.putInt("keyyear", syear);
+                result.putInt("keymonth", smonth);
+                result.putInt("keyday", sday);
+                getParentFragmentManager().setFragmentResult("requestKey", result);
             }
         });
 
