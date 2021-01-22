@@ -21,7 +21,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
     private class SplashHandler implements Runnable{
         public void run(){
-            startActivity(new Intent(getApplication(), GuidelineActivity1.class));
+            startActivity(new Intent(getApplication(), GuidelineActivity.class));
             SplashActivity.this.finish();
         }
     }

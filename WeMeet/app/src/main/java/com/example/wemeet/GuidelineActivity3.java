@@ -3,7 +3,7 @@ package com.example.wemeet;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +13,7 @@ public class GuidelineActivity3 extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.guideline3);
-        ImageButton imageButton=(ImageButton)findViewById(R.id.tologin);
+        Button imageButton=(Button)findViewById(R.id.toLogin);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -18,8 +18,8 @@
         app:layout_constraintVertical_bias="1.0"
         android:background="@drawable/guide3" />
 
-    <ImageButton
-        android:id="@+id/tologin"
+    <Button
+        android:id="@+id/toLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/start_button"

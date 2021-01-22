@@ -12,7 +12,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="130dp"
+        android:background="@drawable/white_background_line"
         android:contentDescription="@string/white_background_line"
+        android:foreground="@drawable/white_background_line"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.515"
@@ -21,19 +23,23 @@
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/white_background_line" />
 
-    <ImageView
+
+    <TextView
         android:id="@+id/imageView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:contentDescription="@string/my_calendar"
+        android:fontFamily="@font/futura_bold"
+        android:text="My Calendar"
+        android:textColor="#FFFFFF"
+        android:textSize="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/my_calendar" />
-
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/canc"

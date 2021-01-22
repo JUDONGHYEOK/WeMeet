@@ -8,7 +8,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -55,16 +57,37 @@ public class AddScheduleFragment extends Fragment {
 
     Map<String, Object> events = new HashMap<>();
 
+
+    public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
+
+    Date setDate;
+    int syear, smonth, sday;
+
+    public AddScheduleFragment(){}
+
+    public void onCreate(@NonNull @Nullable Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        getParentFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                // We use a String here, but any type that can be put in a Bundle is supported
+                int result = bundle.getInt("bundleKey");
+                // Do something with the result
+                syear= result;
+            }
+        });
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_add_schedule, container, false);
+
+        View rootView = inflater.inflate(R.layout.fragment_add_schedule, container, false);
 
         showdate = (TextView) rootView.findViewById(R.id.setDate);
 
-        /* Intent a = new Intent(getIntent());
-        String caldate = a.getStringExtra("cdate");
-        showdate.setText(caldate);
-        /* Toast.makeText(getApplicationContext(),"?? "+caldate,Toast.LENGTH_SHORT).show(); */
+        showdate.setHint(syear+"3");
+
+      //  Toast.makeText(getContext(),"?? "+caldate,Toast.LENGTH_SHORT).show();
 
         showdate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -73,12 +96,24 @@ public class AddScheduleFragment extends Fragment {
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
 
+                Date curdate = cal.getTime();
+                setDate(curdate);
+
                 DatePickerDialog dialog = new DatePickerDialog(
                         getContext(),android.R.style.Theme_Holo_Dialog_MinWidth, mDateSetListener, year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
             }
+
+            private void setDate(Date currentDate){
+                setDate = currentDate;
+
+                String setDatestr = dateFormat.format(currentDate);
+                showdate.setText(setDatestr);
+            }
         });
+
+
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
