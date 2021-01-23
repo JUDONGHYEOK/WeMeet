@@ -72,7 +72,7 @@ public class GroupFragment extends Fragment {
                 });
             }
         }).start();*/
-        db.collection("groups")
+        db.collection("groups").orderBy("date")
                 .whereArrayContains("groupMembers", userId)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -86,7 +86,6 @@ public class GroupFragment extends Fragment {
                         for (DocumentChange dc : snapshots.getDocumentChanges()) {
                             switch (dc.getType()) {
                                 case ADDED:
-                                    Log.d("TAG", "New city: " + dc.getDocument().getData());
                                     String GroupName= (String) dc.getDocument().getData().get("groupName");
                                     ArrayList<String>members= (ArrayList<String>) dc.getDocument().getData().get("groupMembers");
                                     members.remove(userId);
@@ -101,6 +100,7 @@ public class GroupFragment extends Fragment {
                                     break;
                             }
                         }
+                        adapter.notifyDataSetChanged();
 
                     }
                 });
@@ -182,7 +182,6 @@ public class GroupFragment extends Fragment {
 
     @Override
     public void onStart() {
-
         super.onStart();
     }
 
