@@ -12,7 +12,7 @@ public class SplashActivity extends AppCompatActivity {
 protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    setContentView(R.layout.splash);
+    setContentView(R.layout.splash_);
 
     Handler hd = new Handler();
     hd.postDelayed(new SplashHandler(), 3000); // 3000ms = 3초

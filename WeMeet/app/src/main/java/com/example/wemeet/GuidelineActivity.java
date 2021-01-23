@@ -2,10 +2,6 @@ package com.example.wemeet;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,7 +21,7 @@ public class GuidelineActivity extends FragmentActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_guidelines);
+        setContentView(R.layout.activity_guidelines_);
 
         mPager=findViewById(R.id.pager);
         mPager.setOffscreenPageLimit(3);

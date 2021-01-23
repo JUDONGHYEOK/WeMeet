@@ -1,7 +1,6 @@
 package com.example.wemeet;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,16 +15,25 @@ import java.util.ArrayList;
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> {
     Context context;
     ArrayList<GroupData>items=new ArrayList<>();
+    OnGroupClickListener listener;
 
     public GroupAdapter(Context context, ArrayList<GroupData> data) {
         this.context=context;
         this.items=data;
     }
 
+    public void setOnItemClickListener(OnGroupClickListener listener){
+        this.listener=listener;
+    }
+    public void setOnItemClick(ViewHolder holder,View view,int position){
+        if(listener!=null){
+            listener.onItemClick(holder,view,position);
+        }
+    }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v=LayoutInflater.from(parent.getContext()).inflate(R.layout.group_fragment,parent,false);
+        View v=LayoutInflater.from(parent.getContext()).inflate(R.layout.group_fragment_,parent,false);
         return new ViewHolder(v);
     }
     public GroupData getItem(int position){return items.get(position);}
@@ -33,6 +41,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
       GroupData data=items.get(position);
       holder.setItem(data);
+      holder.setOnItemClickListener(listener);
     }
     public void addItem(GroupData group){
         items.add(group);
@@ -54,6 +63,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         public TextView GroupName;
         public TextView GroupPerson;
         public ImageView NumberOfMemebers;
+        OnGroupClickListener listener;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -61,6 +71,16 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             GroupName=(TextView)itemView.findViewById(R.id.groupName);
             GroupPerson=(TextView)itemView.findViewById(R.id.groupPerson);
             NumberOfMemebers=(ImageView)itemView.findViewById(R.id.number_Member);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position=getAdapterPosition();
+                    if(listener!=null){
+                        listener.onItemClick(ViewHolder.this,view,position);
+                    }
+                }
+            });
         }
 
         public void setItem(GroupData group){
@@ -86,6 +106,10 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
                 GroupPerson.setText(group.getMember(0).replaceAll("@gmail.com",""));
             }
 
+        }
+
+        public void setOnItemClickListener(OnGroupClickListener listener){
+            this.listener=listener;
         }
     }
 }

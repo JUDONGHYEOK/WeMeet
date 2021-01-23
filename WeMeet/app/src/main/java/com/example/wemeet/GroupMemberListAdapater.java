@@ -24,7 +24,7 @@ public class GroupMemberListAdapater extends RecyclerView.Adapter<GroupMemberLis
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v=LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_member,parent,false);
+        View v=LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_member_,parent,false);
         return new ViewHolder(v);
     }
     public String getItem(int position){return items.get(position);}

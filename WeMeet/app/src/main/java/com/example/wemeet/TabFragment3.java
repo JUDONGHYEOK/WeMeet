@@ -1,7 +1,6 @@
 package com.example.wemeet;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,7 @@ public class TabFragment3 extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.guideline3,null);
+        View view= inflater.inflate(R.layout.guideline3_,null);
         Button button=(Button)view.findViewById(R.id.toLogin);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

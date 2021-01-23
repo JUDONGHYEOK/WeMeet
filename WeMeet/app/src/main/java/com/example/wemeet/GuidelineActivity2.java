@@ -12,7 +12,7 @@ public class GuidelineActivity2 extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.guideline2);
+        setContentView(R.layout.guideline2_);
         ImageButton imageButton=(ImageButton)findViewById(R.id.guide2);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override

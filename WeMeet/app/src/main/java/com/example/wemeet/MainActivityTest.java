@@ -2,26 +2,17 @@ package com.example.wemeet;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.auth.User;
-
-import java.util.ArrayList;
 
 public class MainActivityTest extends FragmentActivity {
     BottomNavigationView bottomNavigationView;
@@ -38,7 +29,7 @@ public class MainActivityTest extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.main_);
         bottomNavigationView = findViewById(R.id.navigationBar);
         group = new GroupFragment();
         setting = new SettingFragment();
@@ -66,6 +57,11 @@ public class MainActivityTest extends FragmentActivity {
                 }
             }
         });
+    }
+    public void replaceFragment(Fragment fr,Bundle bundle){
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment,fr).commit();;
+        fr.setArguments(bundle);
     }
     public String userId(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
