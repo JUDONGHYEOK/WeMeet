@@ -79,7 +79,7 @@ public class AddScheduleFragment extends Fragment {
 
 
     int syear, smonth, sday;
-    int ayear, amonth, aday;
+
 
     public AddScheduleFragment(){}
 
@@ -129,17 +129,18 @@ public class AddScheduleFragment extends Fragment {
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                Log.d(TAG, "onDateSet: date: " + year + "년" + month + "월" + day + "일");
+
+                String monthzero = (month+1) < 10 ? "0"+(month+1) : String.valueOf(month+1);
+                String dayzero = day < 10 ? "0"+day : String.valueOf(day);
+
+                Log.d(TAG, "onDateSet: date: " + year + "년" + monthzero + "월" + day + "일");
 
                 String date = year + "년" +(month +1 )+ "월" + day + "일";
-                datedb = year+"-"+(month+1)+"-"+day;
+
+                datedb = year+"-"+(monthzero)+"-"+dayzero;
 
                 showdate.setText(date);
 
-                //달력으로 보낼 데이터
-                ayear = year;
-                amonth = month+1;
-                aday = day;
             }
         };
 

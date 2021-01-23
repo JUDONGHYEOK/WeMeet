@@ -64,7 +64,7 @@ public class CalendarFragment extends Fragment {
 
     String Uid;
 
-    Collection<CalendarDay> decodate;
+    ArrayList<CalendarDay> decodate;
 
     private FirebaseFirestore fstore;
 
@@ -91,6 +91,7 @@ public class CalendarFragment extends Fragment {
                         ArrayList<String> strdates = (ArrayList<String>) document.getData().get("Eventdates");
 
                         DateData st = new DateData(strdates);
+
                         decodate = st.CalendardateChange(strdates);
 
                         //all 없을  때
@@ -185,8 +186,14 @@ public class CalendarFragment extends Fragment {
             }
         });
 
+        Collection<CalendarDay> eventslist = new ArrayList<>();
+        //업데이트 함수로 구현??
+        eventslist.add(CalendarDay.today());
+        //1월1일은 표시 안됨 ->왜지..
+        eventslist.add(CalendarDay.from(2020,01,01));
+        materialCalendarView.addDecorator(new DateDecorator(getActivity(), getColor(getActivity(), R.color.black), eventslist));
         //리스트에 있는 날짜 dot로 표시
-       // materialCalendarView.addDecorator(new DateDecorator(getActivity(), getColor(getActivity(), R.color.black), decodate));
+       //materialCalendarView.addDecorator(new DateDecorator(getActivity(), getColor(getActivity(), R.color.black), decodate));
 
 
     return view;
