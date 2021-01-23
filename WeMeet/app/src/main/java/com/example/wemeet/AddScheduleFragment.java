@@ -44,6 +44,7 @@ public class AddScheduleFragment extends Fragment {
 
     private EditText eventform;
     private Button addEvent;
+    private Button backthome;
     private FirebaseFirestore fStore;
 
 
@@ -174,7 +175,8 @@ public class AddScheduleFragment extends Fragment {
         fStore = FirebaseFirestore.getInstance();
 
         eventform = (EditText) rootView.findViewById(R.id.event);
-        addEvent = (Button) rootView.findViewById(R.id.okbotton);
+        addEvent = (Button) rootView.findViewById(R.id.ok_btn);
+
 
         addEvent.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
@@ -188,7 +190,6 @@ public class AddScheduleFragment extends Fragment {
                 Eventsmap.put("User_id", userid);
 
                 //일정 추가한 날짜를 달력 프레그먼트로 보내기
-
               /*  Bundle adddates = new Bundle();
                 adddates.putInt("addyear", ayear);
                 adddates.putInt("addmonth", amonth);
@@ -198,7 +199,6 @@ public class AddScheduleFragment extends Fragment {
                 fStore.collection("Events").add(Eventsmap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-
                         Toast.makeText(getContext(),"Data upload :)",Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -215,6 +215,15 @@ public class AddScheduleFragment extends Fragment {
                 mainactivity.FragmentChange(1);
             }
         });
+
+        backthome = (Button) rootView.findViewById(R.id.cancle_btn);
+        backthome.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View vi){
+                MainActivityTest mainactivity = (MainActivityTest) getActivity();
+                mainactivity.FragmentChange(1);
+            }
+        });
+
     return rootView;
     }
 }
