@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -64,6 +65,7 @@ public class AddScheduleFragment extends Fragment {
     private TextView Timer1;
 
     private String datedb;
+    private Timestamp timestampdb;
 
     private String time;
     int hour,min;
@@ -131,6 +133,7 @@ public class AddScheduleFragment extends Fragment {
 
                 String date = year + "년" +(month +1 )+ "월" + day + "일";
                 datedb = year+"-"+(month+1)+"-"+day;
+
                 showdate.setText(date);
 
                 //달력으로 보낼 데이터
@@ -236,6 +239,8 @@ public class AddScheduleFragment extends Fragment {
                                 if (document.exists()) {
                                     dateRef.update("Eventdates", FieldValue.arrayUnion(datedb));
                                     Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
+
                                  //all 없을  때
                                 } else {
                                     Map<String, Object> Dmap = new HashMap<>();
@@ -264,7 +269,7 @@ public class AddScheduleFragment extends Fragment {
                         }
                     });
 
-                    
+
 
                     //확인시 홈화면으로
                     MainActivityTest mainactivity = (MainActivityTest) getActivity();
