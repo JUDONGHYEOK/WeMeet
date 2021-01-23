@@ -199,7 +199,8 @@ public class AddScheduleFragment extends Fragment {
                 fStore.collection("Events").add(Eventsmap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(getContext(),"Data upload :)",Toast.LENGTH_SHORT).show();
+                       //toast message 작동 x -> null 값 전달??
+                        // Toast.makeText(getContext(),"Data upload :)",Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
