@@ -23,16 +23,26 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
+
+import org.w3c.dom.Document;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -57,6 +67,8 @@ public class AddScheduleFragment extends Fragment {
 
     private String time;
     int hour,min;
+
+    ArrayList eventdates;
 
     Map<String, Object> events = new HashMap<>();
 
@@ -123,7 +135,7 @@ public class AddScheduleFragment extends Fragment {
 
                 //달력으로 보낼 데이터
                 ayear = year;
-                amonth = month;
+                amonth = month+1;
                 aday = day;
             }
         };
@@ -172,51 +184,128 @@ public class AddScheduleFragment extends Fragment {
         String userid = user.toString();
         String email = user.getEmail();
 
+        //db update
         fStore = FirebaseFirestore.getInstance();
 
         eventform = (EditText) rootView.findViewById(R.id.event);
         addEvent = (Button) rootView.findViewById(R.id.ok_btn);
 
+        DocumentReference dateRef = fStore.collection("Adates").document("all");
 
         addEvent.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
-                String title = eventform.getText().toString();
-                Map<String, String> Eventsmap = new HashMap<>();
+                String ti = eventform.getText().toString();
+                if(!ti.trim().isEmpty()){
+                    String title = eventform.getText().toString();
+                    Map<String, String> Eventsmap = new HashMap<>();
 
-                Eventsmap.put("Title", title);
-                Eventsmap.put("Date", datedb);
-                Eventsmap.put("Time", time);
-                Eventsmap.put("User_Email", email);
-                Eventsmap.put("User_id", userid);
+                    Eventsmap.put("Title", title);
+                    Eventsmap.put("Date", datedb);
+                    Eventsmap.put("Time", time);
+                    Eventsmap.put("User_Email", email);
+                    Eventsmap.put("User_id", userid);
 
-                //일정 추가한 날짜를 달력 프레그먼트로 보내기
+
+                    //일정 추가한 날짜를 달력 프레그먼트로 보내기
               /*  Bundle adddates = new Bundle();
                 adddates.putInt("addyear", ayear);
                 adddates.putInt("addmonth", amonth);
                 adddates.putInt("addday", aday);
                 getParentFragmentManager().setFragmentResult("requestKey", adddates);*/
 
-                fStore.collection("Events").add(Eventsmap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                       //toast message 작동 x -> null 값 전달??
-                        // Toast.makeText(getContext(),"Data upload :)",Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        String error = e.getMessage();
-                        Toast.makeText(getContext(),"Error : "+ error, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    fStore.collection("Events").add(Eventsmap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            String error = e.getMessage();
+                            Toast.makeText(getContext(),"Error : "+ error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    //Adates의 all 유무로 data 생성 및 update
+                    DocumentReference docRef = fStore.collection("Adates").document("all");
+                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                //all 이 있을 때
+                                if (document.exists()) {
+                                    dateRef.update("Eventdates", FieldValue.arrayUnion(datedb));
+                                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                 //all 없을  때
+                                } else {
+                                    Map<String, Object> Dmap = new HashMap<>();
+                                    Dmap.put("Eventdates", Arrays.asList(datedb));
+                                    Dmap.put("DUser_Email", email);
+
+                                    fStore.collection("Adates").document("all")
+                                            .set(Dmap)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w(TAG, "Error writing document", e);
+                                                }
+                                            });
+                                    Log.d(TAG, "No such document");
+                                }
+                            } else {
+                                Log.d(TAG, "get failed with ", task.getException());
+                            }
+                        }
+                    });
 
 
-                //홈화면으로
-                MainActivityTest mainactivity = (MainActivityTest) getActivity();
-                mainactivity.FragmentChange(1);
+
+
+                    //Adates collection 생성 (Eventdates, User_Email)
+                    //email이 있으면 data update / 없으면 생성
+                    /*if(query.toString() == email){
+                        dateRef.update("Eventdates", FieldValue.arrayUnion(datedb));
+
+                    } else if(query.toString() != email){
+                        Map<String, Object> Dmap = new HashMap<>();
+                        Dmap.put("Eventdates", Arrays.asList(datedb));
+                        Dmap.put("DUser_Email", email);
+
+                        fStore.collection("Adates").document("all")
+                                .set(Dmap)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, query.toString()+"DocumentSnapshot successfully written!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Error writing document", e);
+                                    }
+                                });
+                    }*/
+
+
+                    //확인시 홈화면으로
+                    MainActivityTest mainactivity = (MainActivityTest) getActivity();
+                    mainactivity.FragmentChange(1);
+                }
+                //일정 내용 없을 시 작동
+                else if(ti.trim().isEmpty()){
+                    Toast.makeText(getActivity(),"일정내용을 입력하세요",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
+        //취소시 홈화면으로
         backthome = (Button) rootView.findViewById(R.id.cancle_btn);
         backthome.setOnClickListener(new View.OnClickListener() {
             public void onClick(View vi){

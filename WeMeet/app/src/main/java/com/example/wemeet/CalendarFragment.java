@@ -39,6 +39,8 @@ public class CalendarFragment extends Fragment {
     int syear, smonth, sday;
     int ayear,amonth,aday;
 
+    ArrayList eventdates;
+
     CalendarDay c;
 //일정이 추가된 날짜 가져오기 -> 데이터베이스에서 가져오는 방법으로 해야할듯
   /*  public void onCreate(@NonNull @Nullable Bundle savedInstanceState){
@@ -104,6 +106,9 @@ public class CalendarFragment extends Fragment {
                 getParentFragmentManager().setFragmentResult("requestKey", result);
             }
         });
+
+
+
         //일정이 있는 날짜 리스트
         Collection<CalendarDay> eventslist = new ArrayList<>();
         //업데이트 함수로 구현??

@@ -53,7 +53,8 @@ public class GroupFragment extends Fragment {
         list=new ArrayList<>();
         userId=((MainActivityTest)getActivity()).userId();
         try{
-            db = FirebaseFirestore.getInstance();}catch(Exception e){
+            db = FirebaseFirestore.getInstance();
+        }catch(Exception e){
             Toast.makeText(getActivity(), "연결 오류",Toast.LENGTH_LONG).show();
         }
 
