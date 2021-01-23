@@ -264,35 +264,7 @@ public class AddScheduleFragment extends Fragment {
                         }
                     });
 
-
-
-
-                    //Adates collection 생성 (Eventdates, User_Email)
-                    //email이 있으면 data update / 없으면 생성
-                    /*if(query.toString() == email){
-                        dateRef.update("Eventdates", FieldValue.arrayUnion(datedb));
-
-                    } else if(query.toString() != email){
-                        Map<String, Object> Dmap = new HashMap<>();
-                        Dmap.put("Eventdates", Arrays.asList(datedb));
-                        Dmap.put("DUser_Email", email);
-
-                        fStore.collection("Adates").document("all")
-                                .set(Dmap)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Log.d(TAG, query.toString()+"DocumentSnapshot successfully written!");
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.w(TAG, "Error writing document", e);
-                                    }
-                                });
-                    }*/
-
+                    
 
                     //확인시 홈화면으로
                     MainActivityTest mainactivity = (MainActivityTest) getActivity();
