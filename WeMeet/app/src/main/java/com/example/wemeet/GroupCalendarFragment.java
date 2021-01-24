@@ -33,7 +33,7 @@ public class GroupCalendarFragment extends Fragment {
         ArrayList<String> memberList=bundle.getStringArrayList("memberList");
         String gn=bundle.getString("groupName");
         groupName=(TextView)view.findViewById(R.id.groupName);
-        groupName.setText(gn);
+        groupName.setText(gn+"'s Calendar");
         Iterator<String> iter=memberList.iterator();
         while(iter.hasNext()){
             Toast.makeText(getActivity(), iter.next(),Toast.LENGTH_SHORT).show();

@@ -16,10 +16,17 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
     Context context;
     ArrayList<GroupData>items=new ArrayList<>();
     OnGroupClickListener listener;
+    OnGroupLongClickListener listen;
 
     public GroupAdapter(Context context, ArrayList<GroupData> data) {
         this.context=context;
         this.items=data;
+    }
+    public void setOnItemLongClickListener(OnGroupLongClickListener listen){this.listen=listen;}
+    public void setOnItemLongClick(ViewHolder holder,View view,int position){
+        if(listen!=null){
+            listen.onItemLongClick(holder,view,position);
+        }
     }
 
     public void setOnItemClickListener(OnGroupClickListener listener){
@@ -42,6 +49,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
       GroupData data=items.get(position);
       holder.setItem(data);
       holder.setOnItemClickListener(listener);
+      holder.setOnItemLongClickListener(listen);
     }
     public void addItem(GroupData group){
         items.add(group);
@@ -62,15 +70,16 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
     static class ViewHolder extends RecyclerView.ViewHolder{
         public TextView GroupName;
         public TextView GroupPerson;
-        public ImageView NumberOfMemebers;
+        public ImageView NumberOfMember;
         OnGroupClickListener listener;
+        OnGroupLongClickListener listen;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             GroupName=(TextView)itemView.findViewById(R.id.groupName);
             GroupPerson=(TextView)itemView.findViewById(R.id.groupPerson);
-            NumberOfMemebers=(ImageView)itemView.findViewById(R.id.number_Member);
+            NumberOfMember =(ImageView)itemView.findViewById(R.id.number_Member);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -81,6 +90,18 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
                     }
                 }
             });
+            itemView.setOnLongClickListener(new View.OnLongClickListener(){
+
+                @Override
+                public boolean onLongClick(View v) {
+
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION)
+                    {
+                        listen.onItemLongClick(ViewHolder.this,v,pos);}
+                    return true;
+                }
+            });
         }
 
         public void setItem(GroupData group){
@@ -88,16 +109,16 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             int NumberOfPeople=group.getMembers().size();
             switch(NumberOfPeople){
                 case 1:
-                    NumberOfMemebers.setImageResource(R.drawable.groupmember1);
+                    NumberOfMember.setImageResource(R.drawable.groupmember1);
                     break;
                 case 2:
-                    NumberOfMemebers.setImageResource(R.drawable.groupmember2);
+                    NumberOfMember.setImageResource(R.drawable.groupmember2);
                     break;
                 case 3:
-                    NumberOfMemebers.setImageResource(R.drawable.groupmember3);
+                    NumberOfMember.setImageResource(R.drawable.groupmember3);
                     break;
                 default:
-                    NumberOfMemebers.setImageResource(R.drawable.groupmember4);
+                    NumberOfMember.setImageResource(R.drawable.groupmember4);
                     break;
             }
             if(NumberOfPeople>=2) {
@@ -110,6 +131,9 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
         public void setOnItemClickListener(OnGroupClickListener listener){
             this.listener=listener;
+        }
+        public void setOnItemLongClickListener(OnGroupLongClickListener listen){
+            this.listen=listen;
         }
     }
 }

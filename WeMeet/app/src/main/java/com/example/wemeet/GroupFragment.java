@@ -60,8 +60,6 @@ public class GroupFragment extends Fragment {
         qr =db.collection("groups").orderBy("date")
                 .whereArrayContains("groupMembers", userId);
         listenToChildFragment();
-
-        /*listenerAdd();*/
     }
 
 
@@ -78,18 +76,48 @@ public class GroupFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         RecyclerDecoration spaceDecoration=new RecyclerDecoration(30);
         recyclerView.addItemDecoration(spaceDecoration);
-        /*initDataset();*/
         listenerAdd();
         adapter.setOnItemClickListener(new OnGroupClickListener() {
             @Override
             public void onItemClick(GroupAdapter.ViewHolder holder, View view, int position) {
                 GroupData item=adapter.getItem(position);
                 Bundle result = new Bundle();
-                item.getMembers().add(0,userId);
+                String myId=null;
+                for(String id:item.getMembers()){
+                    if(id.equals(userId)){
+                        myId=id;
+                        break;
+                    }
+                }
+                if(myId==null){
+                    item.getMembers().add(0,userId);}
                 result.putString("objectId",item.getObjectId());
                 result.putStringArrayList("memberList",item.getMembers());
                 result.putString("groupName",item.getGroupName());
                 ((MainActivityTest)getActivity()).replaceFragment(new GroupCalendarFragment(),result);
+            }
+        });
+        adapter.setOnItemLongClickListener(new OnGroupLongClickListener() {
+            @Override
+            public void onItemLongClick(GroupAdapter.ViewHolder holder, View view, int position) {
+                Toast.makeText(getActivity(),"길게눌림",Toast.LENGTH_SHORT).show();
+                GroupCheckDialog bottomSheet=new GroupCheckDialog();
+                bottomSheet.show(getChildFragmentManager(),"Tag");
+                GroupData item=adapter.getItem(position);
+                Bundle result = new Bundle();
+                String myId=null;
+                for(String id:item.getMembers()){
+                    if(id.equals(userId)){
+                        myId=id;
+                        break;
+                    }
+                }
+                if(myId==null){
+                item.getMembers().add(0,userId);}
+                result.putString("objectId",item.getObjectId());
+                result.putStringArrayList("memberList",item.getMembers());
+                result.putString("groupName",item.getGroupName());
+                bottomSheet.setArguments(result);
             }
         });
         Toast.makeText(getActivity(), userId,Toast.LENGTH_SHORT).show();
@@ -117,7 +145,10 @@ public class GroupFragment extends Fragment {
                                 ArrayList<String>members= (ArrayList<String>) document.getData().get("groupMembers");
                                 members.remove(userId);
                                 String Id=document.getId();
-                                list.add(new GroupData(Id,GroupName, members));
+                                GroupData newData=new GroupData(Id,GroupName, members);
+                                if(!list.contains(newData)){
+                                    list.add(newData);
+                                }
                                 Log.d("그룹추가", "  "+document.getId() + " => " + document.getData().get("last"));
                             }
                         } else {
@@ -139,25 +170,41 @@ public class GroupFragment extends Fragment {
                             Log.w("TAG", "listen:error", e);
                             return;
                         }
+                        String GroupName;
+                        ArrayList<String>members;
+                        String Id;
+                        GroupData newData;
                         for (DocumentChange dc : snapshots.getDocumentChanges()) {
                             switch (dc.getType()) {
                                 case ADDED:
-                                    String GroupName= (String) dc.getDocument().getData().get("groupName");
-                                    ArrayList<String>members= (ArrayList<String>) dc.getDocument().getData().get("groupMembers");
-                                    String Id=dc.getDocument().getId();
+                                   GroupName= (String) dc.getDocument().getData().get("groupName");
+                                    members= (ArrayList<String>) dc.getDocument().getData().get("groupMembers");
+                                    Id=dc.getDocument().getId();
                                     members.remove(userId);
-                                    list.add(new GroupData(Id,GroupName, members));
+                                    newData=new GroupData(Id,GroupName, members);
+                                    if(!list.contains(newData)){
+                                        list.add(newData);
+                                        Toast.makeText(getActivity(),"그룹추가",Toast.LENGTH_SHORT).show();
+                                    }
                                     break;
                                 case MODIFIED:
                                     break;
                                 case REMOVED:
+                                    GroupName= (String) dc.getDocument().getData().get("groupName");
+                                    members= (ArrayList<String>) dc.getDocument().getData().get("groupMembers");
+                                    Id=dc.getDocument().getId();
+                                    members.remove(userId);
+                                    newData=new GroupData(Id,GroupName, members);
+                                    if(!list.contains(newData)){
+                                        list.remove(newData);
+                                    }
                                     break;
                             }
                         }
                         adapter.notifyDataSetChanged();
-
                     }
                 });
+
     }
 
     private void listenToChildFragment() {
