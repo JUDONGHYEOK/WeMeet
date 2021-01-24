@@ -60,6 +60,7 @@ public class GroupFragment extends Fragment {
         qr =db.collection("groups").orderBy("date")
                 .whereArrayContains("groupMembers", userId);
         listenToChildFragment();
+        listenerAdd();
     }
 
 
@@ -76,7 +77,7 @@ public class GroupFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         RecyclerDecoration spaceDecoration=new RecyclerDecoration(30);
         recyclerView.addItemDecoration(spaceDecoration);
-        listenerAdd();
+
         adapter.setOnItemClickListener(new OnGroupClickListener() {
             @Override
             public void onItemClick(GroupAdapter.ViewHolder holder, View view, int position) {
