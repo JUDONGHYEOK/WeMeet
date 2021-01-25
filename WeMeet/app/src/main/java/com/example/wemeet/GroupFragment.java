@@ -52,7 +52,7 @@ public class GroupFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         list=new ArrayList<>();
-        userId=((MainActivityTest)getActivity()).userId();
+        userId=((MainActivity)getActivity()).userId();
         try{
             db = FirebaseFirestore.getInstance();}catch(Exception e){
             Toast.makeText(getActivity(), "연결 오류",Toast.LENGTH_LONG).show();
@@ -95,7 +95,7 @@ public class GroupFragment extends Fragment {
                 result.putString("objectId",item.getObjectId());
                 result.putStringArrayList("memberList",item.getMembers());
                 result.putString("groupName",item.getGroupName());
-                ((MainActivityTest)getActivity()).replaceFragment(new GroupCalendarFragment(),result);
+                ((MainActivity)getActivity()).replaceFragment(new GroupCalendarFragment(),result);
             }
         });
         adapter.setOnItemLongClickListener(new OnGroupLongClickListener() {

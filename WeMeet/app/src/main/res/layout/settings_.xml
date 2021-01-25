@@ -2,20 +2,43 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#304030"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="354dp"
+        android:fontFamily="@font/roboto"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="20dp"
         android:text="settings"
-        android:textSize="50dp" />
+        android:textSize="50dp"
+        android:paddingBottom="30dp"/>
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="?android:attr/listDivider" />
 
     <Button
         android:id="@+id/logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="로그아웃" />
+        android:background="@drawable/white_background"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="로그아웃"
+        android:fontFamily="@font/futura_bold"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:textAlignment="textStart"
+        />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+
 </LinearLayout>
