@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingEnd="30dp"
+    android:paddingBottom="30dp">
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="90dp"
+    android:orientation="horizontal"
+    android:background="@drawable/group"
+    >
+
+    <ImageView
+        android:id="@+id/number_Member"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/black" />
+
+    <LinearLayout
+    android:layout_width="344dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/groupName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Group Name"
+        android:textColor="#ffffff"
+        android:textSize="16dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginLeft="20dp"
+        android:fontFamily="@font/futura"
+        />
+
+    <TextView
+        android:id="@+id/groupPerson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif"
+        android:text="그룹원 이름"
+        android:textColor="#ffffff"
+        android:textSize="12dp" />
+
+
+</LinearLayout>
+</LinearLayout></LinearLayout>
