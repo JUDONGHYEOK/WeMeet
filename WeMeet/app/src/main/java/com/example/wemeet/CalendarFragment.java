@@ -39,13 +39,11 @@ import static androidx.core.content.ContextCompat.getColor;
 public class CalendarFragment extends Fragment {
     private static final String TAG = "homecalendar";
 
-    AddScheduleFragment addschedule;
-
     int syear, smonth, sday;
-    int ayear, amonth, aday;
 
     ArrayList<String> eventdates;
     String Uid;
+    MaterialCalendarView materialCalendarView;
 
     Collection<CalendarDay> markdate = new ArrayList<>(Arrays.asList(CalendarDay.from(2021,01,03)));
     ArrayList<CalendarDay> decodate = new ArrayList<CalendarDay>(Arrays.asList(CalendarDay.from(2021,01,01)));;
@@ -56,6 +54,7 @@ public class CalendarFragment extends Fragment {
     //일정이 추가된 날짜 가져오기 -> 데이터베이스에서 가져오는 방법으로 해야할듯
     public void onCreate(@NonNull @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -64,8 +63,9 @@ public class CalendarFragment extends Fragment {
         decodate.clear();
         Log.d(TAG,"초기화"+decodate);
 
-        MaterialCalendarView materialCalendarView = (MaterialCalendarView) view.findViewById(R.id.home_calendarView);
+        materialCalendarView = (MaterialCalendarView) view.findViewById(R.id.home_calendarView);
         materialCalendarView.setSelectionColor(Color.BLACK);
+
 
         ImageButton addButton = (ImageButton) view.findViewById(R.id.okbotton);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +80,7 @@ public class CalendarFragment extends Fragment {
             }
         });
 
-      /*  fstore = FirebaseFirestore.getInstance();
+        fstore = FirebaseFirestore.getInstance();
         eventdates = new ArrayList<>();
         Uid = ((MainActivity)getActivity()).userId();
 
@@ -121,17 +121,14 @@ public class CalendarFragment extends Fragment {
             }
         });
         markdate.addAll(decodate);
-        Log.d(TAG,"create 안에서 "+ decodate);*/
+        Log.d(TAG,"create 안에서 "+ decodate);
 
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-
                 syear = date.getYear();
                 smonth = date.getMonth();
                 sday = date.getDay();
-
-                //Toast.makeText(getContext(), syear + "?" + smonth + "?" + sday, Toast.LENGTH_LONG).show();
             }
         });
 
