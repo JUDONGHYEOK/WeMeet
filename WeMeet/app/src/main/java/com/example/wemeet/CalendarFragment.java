@@ -1,5 +1,6 @@
 package com.example.wemeet;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -63,8 +64,9 @@ public class CalendarFragment extends Fragment {
         decodate.clear();
         Log.d(TAG,"초기화"+decodate);
 
-        addschedule = new AddScheduleFragment();
         MaterialCalendarView materialCalendarView = (MaterialCalendarView) view.findViewById(R.id.home_calendarView);
+        materialCalendarView.setSelectionColor(Color.BLACK);
+
         ImageButton addButton = (ImageButton) view.findViewById(R.id.okbotton);
         addButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -75,11 +77,6 @@ public class CalendarFragment extends Fragment {
                 result.putInt("keyday", sday);
                 ((MainActivity)getActivity()).replaceFragment(new AddScheduleFragment(),result);
 
-
-
-
-                //MainActivity mainactivity = (MainActivity) getActivity();
-                //mainactivity.FragmentChange(0);
             }
         });
 
@@ -129,18 +126,12 @@ public class CalendarFragment extends Fragment {
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                //  Toast.makeText(getContext(), " 123"+date, Toast.LENGTH_LONG).show();
+
                 syear = date.getYear();
                 smonth = date.getMonth();
                 sday = date.getDay();
-                Toast.makeText(getContext(), syear + "?" + smonth + "?" + sday, Toast.LENGTH_LONG).show();
 
-                //선택 날짜 보내기
-             /*   Bundle result = new Bundle();
-                result.putInt("keyyear", syear);
-                result.putInt("keymonth", smonth);
-                result.putInt("keyday", sday);*/
-                //getParentFragmentManager().setFragmentResult("requestKey", result);
+                //Toast.makeText(getContext(), syear + "?" + smonth + "?" + sday, Toast.LENGTH_LONG).show();
             }
         });
 

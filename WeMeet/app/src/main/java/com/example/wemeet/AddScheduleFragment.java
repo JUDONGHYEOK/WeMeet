@@ -89,19 +89,6 @@ public class AddScheduleFragment extends Fragment {
         smonth = kmonth;
         sday = kday;
 
-        /*getParentFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
-            @Override
-            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
-                // 달력에서 선택된 날짜 가져오기 위함 -> 탭을 바꿔야 적용되는 문제 발생
-                int kyear = bundle.getInt("keyyear");
-                int kmonth = bundle.getInt("keymonth");
-                int kday = bundle.getInt("keyday");
-
-                syear= kyear;
-                smonth = kmonth;
-                sday = kday;
-            }
-        });*/
     }
 
     @Override
@@ -112,8 +99,6 @@ public class AddScheduleFragment extends Fragment {
         showdate = (TextView) rootView.findViewById(R.id.setDate);
 
         showdate.setHint(syear+"년"+smonth+"월"+sday+"일");
-
-      //  Toast.makeText(getContext(),"?? "+caldate,Toast.LENGTH_SHORT).show();
 
         showdate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -215,13 +200,6 @@ public class AddScheduleFragment extends Fragment {
                     Eventsmap.put("User_id", userid);
 
 
-                    //일정 추가한 날짜를 달력 프레그먼트로 보내기
-              /*  Bundle adddates = new Bundle();
-                adddates.putInt("addyear", ayear);
-                adddates.putInt("addmonth", amonth);
-                adddates.putInt("addday", aday);
-                getParentFragmentManager().setFragmentResult("requestKey", adddates);*/
-
                     fStore.collection("Events").add(Eventsmap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
@@ -274,8 +252,6 @@ public class AddScheduleFragment extends Fragment {
                             }
                         }
                     });
-
-
 
                     //확인시 홈화면으로
                     MainActivity mainactivity = (MainActivity) getActivity();
