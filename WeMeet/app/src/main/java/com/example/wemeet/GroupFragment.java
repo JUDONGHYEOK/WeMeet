@@ -102,6 +102,7 @@ public class GroupFragment extends Fragment {
                 result.putString("objectId",item.getObjectId());
                 result.putStringArrayList("memberList",item.getMembers());
                 result.putString("groupName",item.getGroupName());
+
                 ((MainActivity)getActivity()).replaceFragment(new GroupCalendarFragment(),result);
             }
         });
@@ -133,8 +134,10 @@ public class GroupFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-                getChildFragmentManager().beginTransaction().replace(R.id.addGroup, new GroupAddFragment()).commitNow();
+                GroupAddDialog groupAdd=new GroupAddDialog();
+                groupAdd.show(getChildFragmentManager(),"");
+                /*FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+                getChildFragmentManager().beginTransaction().replace(R.id.addGroup, new GroupAddFragment()).commitNow();*/
             }
         });
 
