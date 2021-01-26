@@ -1,9 +1,18 @@
 package com.example.wemeet;
 
 import android.os.Build;
+import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.time.LocalDate;
@@ -16,6 +25,13 @@ public class DateData {
     Collection<CalendarDay> emp;
     ArrayList<String> strdate;
     String t;
+    ArrayList<String> eventdates;
+    String Uid;
+
+    ArrayList<CalendarDay> decodate;
+    private FirebaseFirestore fstore;
+
+    ArrayList<String> outdate;
 
     public DateData(ArrayList<String> strdate) {
         this.strdate = strdate;
@@ -36,5 +52,4 @@ public class DateData {
         }
         return eventdate;
     }
-
 }

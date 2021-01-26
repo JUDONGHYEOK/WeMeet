@@ -78,7 +78,17 @@ public class AddScheduleFragment extends Fragment {
 
     public void onCreate(@NonNull @Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        getParentFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
+
+        Bundle bundle=getArguments();
+        int kyear = bundle.getInt("keyyear");
+        int kmonth = bundle.getInt("keymonth");
+        int kday = bundle.getInt("keyday");
+
+        syear= kyear;
+        smonth = kmonth;
+        sday = kday;
+
+        /*getParentFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
                 // 달력에서 선택된 날짜 가져오기 위함 -> 탭을 바꿔야 적용되는 문제 발생
@@ -90,7 +100,7 @@ public class AddScheduleFragment extends Fragment {
                 smonth = kmonth;
                 sday = kday;
             }
-        });
+        });*/
     }
 
     @Override
@@ -268,6 +278,7 @@ public class AddScheduleFragment extends Fragment {
                     //확인시 홈화면으로
                     MainActivity mainactivity = (MainActivity) getActivity();
                     mainactivity.FragmentChange(1);
+
                 }
                 //일정 내용 없을 시 작동
                 else if(ti.trim().isEmpty()){

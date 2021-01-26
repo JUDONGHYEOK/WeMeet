@@ -61,7 +61,6 @@ public class GroupFragment extends Fragment {
                 .whereArrayContains("groupMembers", userId);
         listenToChildFragment();
         listenerAdd();
-        Log.d("리스너"," 0"+list);
     }
 
 
@@ -79,7 +78,7 @@ public class GroupFragment extends Fragment {
         RecyclerDecoration spaceDecoration=new RecyclerDecoration(30);
         recyclerView.addItemDecoration(spaceDecoration);
 
-        adapter.setOnItemClickListener(new OnGroupClickListener() {
+        /*adapter.setOnItemClickListener(new OnGroupClickListener() {
             @Override
             public void onItemClick(GroupAdapter.ViewHolder holder, View view, int position) {
                 GroupData item=adapter.getItem(position);
@@ -98,7 +97,7 @@ public class GroupFragment extends Fragment {
                 result.putString("groupName",item.getGroupName());
                 ((MainActivity)getActivity()).replaceFragment(new GroupCalendarFragment(),result);
             }
-        });
+        });*/
         adapter.setOnItemLongClickListener(new OnGroupLongClickListener() {
             @Override
             public void onItemLongClick(GroupAdapter.ViewHolder holder, View view, int position) {

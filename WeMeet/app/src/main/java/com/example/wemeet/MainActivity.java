@@ -2,6 +2,7 @@ package com.example.wemeet;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
 
 public class MainActivity extends FragmentActivity {
     BottomNavigationView bottomNavigationView;
@@ -28,9 +31,12 @@ public class MainActivity extends FragmentActivity {
     FirebaseFirestore db;
     AddScheduleFragment addSchedule;
 
+    ArrayList<String> stringdata;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.main_);
         bottomNavigationView = findViewById(R.id.navigationBar);
         group = new GroupFragment();
@@ -38,7 +44,8 @@ public class MainActivity extends FragmentActivity {
         calendar = new CalendarFragment();
         mAuth = FirebaseAuth.getInstance();
         addSchedule = new AddScheduleFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment, group).commitAllowingStateLoss();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment, calendar).commitAllowingStateLoss();
+
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
