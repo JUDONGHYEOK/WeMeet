@@ -1,6 +1,8 @@
 package com.example.wemeet;
 
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -36,6 +38,9 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(Build.VERSION.SDK_INT >= 21){
+            getWindow().setStatusBarColor(Color.BLACK);
+        }
 
         setContentView(R.layout.main_);
         bottomNavigationView = findViewById(R.id.navigationBar);
