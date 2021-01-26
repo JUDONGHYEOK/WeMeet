@@ -26,6 +26,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -47,12 +48,15 @@ public class GroupFragment extends Fragment {
     String userId;
     FirebaseFirestore db;
     Query qr;
+    ListenerRegistration li;
      public GroupFragment(){}
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         list=new ArrayList<>();
         userId=((MainActivity)getActivity()).userId();
+        li=null;
+
         try{
             db = FirebaseFirestore.getInstance();}catch(Exception e){
             Toast.makeText(getActivity(), "연결 오류",Toast.LENGTH_LONG).show();
@@ -63,7 +67,10 @@ public class GroupFragment extends Fragment {
         listenerAdd();
     }
 
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
 
     @Nullable
     @Override
@@ -162,7 +169,13 @@ public class GroupFragment extends Fragment {
     }
 
 
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
     private void listenerAdd() {
+        if(li==null){
         qr.addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot snapshots,
@@ -196,15 +209,21 @@ public class GroupFragment extends Fragment {
                                     Id=dc.getDocument().getId();
                                     members.remove(userId);
                                     newData=new GroupData(Id,GroupName, members);
-                                    if(!list.contains(newData)){
-                                        list.remove(newData);
+                                    int i=0;
+                                    for(;i<list.size()-1;i++){
+                                        if(list.get(i).getObjectId()==Id){
+                                            break;
+                                        }
                                     }
+                                    Toast.makeText(getActivity(),GroupName,Toast.LENGTH_SHORT).show();
+                                    list.remove(i);
                                     break;
                             }
                         }
                         adapter.notifyDataSetChanged();
                     }
                 });
+        }
 
     }
 
@@ -217,6 +236,28 @@ public class GroupFragment extends Fragment {
                         ArrayList<String> member=bundle.getStringArrayList("Members");
                         submitGroup(result,member);
                         member.remove(userId);
+                    }
+                });
+        getChildFragmentManager()
+                .setFragmentResultListener("deleteGroup",this,new FragmentResultListener(){
+
+                    @Override
+                    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                        String IdToDelete=result.getString("ObjectId");
+                        db.collection("groups").document(IdToDelete)
+                                .delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("TAG", "DocumentSnapshot successfully deleted!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w("TAG", "Error deleting document", e);
+                                    }
+                                });
                     }
                 });
     }

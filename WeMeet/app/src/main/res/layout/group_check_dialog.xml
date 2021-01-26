@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/black"
         android:fontFamily="@font/roboto"
-        android:text="취소"
+        android:text="삭제"
         android:textColor="#ffffff"
         android:textSize="14dp"
         app:layout_constraintLeft_toLeftOf="parent"

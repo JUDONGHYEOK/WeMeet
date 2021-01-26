@@ -41,7 +41,7 @@ public class GroupAddFragment extends Fragment {
         View view=inflater.inflate(R.layout.group_add_,container,false);
         view.bringToFront();
         view.setVisibility(View.VISIBLE);
-        view.setFocusable(true);
+        view.setFocusable(false);
         final Context context=view.getContext();
         mLayoutManager=new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false);
         recyclerView=(RecyclerView)view.findViewById(R.id.memberList);

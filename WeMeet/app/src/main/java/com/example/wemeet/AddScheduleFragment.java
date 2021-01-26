@@ -263,8 +263,6 @@ public class AddScheduleFragment extends Fragment {
                         }
                     });
 
-
-
                     //확인시 홈화면으로
                     MainActivity mainactivity = (MainActivity) getActivity();
                     mainactivity.FragmentChange(1);

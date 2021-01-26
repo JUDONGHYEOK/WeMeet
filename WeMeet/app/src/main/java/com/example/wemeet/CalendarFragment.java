@@ -100,10 +100,6 @@ public class CalendarFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =inflater.inflate(R.layout.fragment_calendar,container,false);
 
-
-
-
-
         /*final DocumentReference docRef = fstore.collection("Adates").document("all");
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
