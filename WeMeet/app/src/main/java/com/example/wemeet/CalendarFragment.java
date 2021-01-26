@@ -47,7 +47,7 @@ public class CalendarFragment extends Fragment {
     MaterialCalendarView materialCalendarView;
 
     Collection<CalendarDay> markdate = new ArrayList<CalendarDay>(Arrays.asList(CalendarDay.from(2021,01,03)));
-    ArrayList<CalendarDay> decodate = new ArrayList<CalendarDay>(Arrays.asList(CalendarDay.from(2021,01,01)));;
+    Collection<CalendarDay> decodate = new ArrayList<CalendarDay>(Arrays.asList(CalendarDay.from(2021,01,01)));;
 
     private FirebaseFirestore fstore;
 
@@ -57,7 +57,7 @@ public class CalendarFragment extends Fragment {
         super.onCreate(savedInstanceState);
         markdate.add(CalendarDay.from(2021,01,4));
         markdate.add(CalendarDay.from(2021,01,29));
-        markdate.add(CalendarDay.from(2021,01,15));
+
         //GetDB getDB = new GetDB(decodate);
        // getDB.setPriority(10);
        // getDB.start();
@@ -145,7 +145,9 @@ public class CalendarFragment extends Fragment {
        // Decorator deco = new Decorator(getActivity(), getColor(getActivity() ,R.color.gray), decodate, materialCalendarView);
         //deco.setPriority(1);
         //deco.start();
+
         materialCalendarView.addDecorator(new DateDecorator(getActivity(), getColor(getActivity(), R.color.gray), decodate));
+        decodate.add(CalendarDay.from(2021,01,15));
         Log.d(TAG,"표시 후 "+ decodate);
 
 
