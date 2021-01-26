@@ -195,6 +195,7 @@ public class AddScheduleFragment extends Fragment {
         fStore = FirebaseFirestore.getInstance();
 
         eventform = (EditText) rootView.findViewById(R.id.event);
+        eventform.setHint("제목");
         addEvent = (Button) rootView.findViewById(R.id.ok_btn);
 
         DocumentReference dateRef = fStore.collection("Adates").document("all");
