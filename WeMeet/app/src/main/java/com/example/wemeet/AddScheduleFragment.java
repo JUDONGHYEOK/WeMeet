@@ -91,7 +91,6 @@ public class AddScheduleFragment extends Fragment {
         datedb = null;
         inititle = syear+"년"+smonth+"월"+sday+"의 일정";
 
-
     }
 
     @Override
@@ -102,7 +101,6 @@ public class AddScheduleFragment extends Fragment {
         showdate = (TextView) rootView.findViewById(R.id.setDate);
 
         showdate.setHint(syear+"년"+smonth+"월"+sday+"일");
-
 
         showdate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
