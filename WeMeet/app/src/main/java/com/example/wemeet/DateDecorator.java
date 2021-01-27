@@ -2,6 +2,7 @@ package com.example.wemeet;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
@@ -31,6 +32,7 @@ public class DateDecorator implements DayViewDecorator {
 
     @Override
     public void decorate(DayViewFacade view) {
+        Log.d("객체생성",dates.toString());
         view.addSpan(new DotSpan(10, color));
     }
 }
