@@ -45,7 +45,6 @@ public class GroupCalendarFragment extends Fragment {
     ArrayList<String> groupevent;
     String Uid;
     MaterialCalendarView materialCalendarView;
-    //Collection<CalendarDay> allday = new ArrayList<CalendarDay>(Arrays.asList(CalendarDay.from(2021,01,24), CalendarDay.from(2021,01,25),CalendarDay.from(2021,01,26),CalendarDay.from(2021,01,27),CalendarDay.from(2021,01,28),CalendarDay.from(2021,01,29),CalendarDay.from(2021,01,30)));
     Collection<CalendarDay> allday = new ArrayList<CalendarDay>(Arrays.asList(CalendarDay.from(2020,01,01)));
     Collection<CalendarDay> decodate = new ArrayList<CalendarDay>(Arrays.asList(CalendarDay.from(2021,01,01)));;
     private FirebaseFirestore fstore;
@@ -55,6 +54,7 @@ public class GroupCalendarFragment extends Fragment {
         super.onCreate(savedInstanceState);
         for(int i=1;i<32;i++){
             allday.add(CalendarDay.from(2021,01,i));
+
         }
     }
 
@@ -62,9 +62,14 @@ public class GroupCalendarFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.group_calendar_,container, false);
+        fstore = FirebaseFirestore.getInstance();
+        eventdates = new ArrayList<>();
+        Uid = ((MainActivity)getActivity()).userId();
         Bundle bundle=getArguments();
         String objectId=bundle.getString("objectId");
         ArrayList<String> memberList=bundle.getStringArrayList("memberList");
+        ArrayList<String> memberall = bundle.getStringArrayList("memberList");
+        memberall.add(Uid);
         String gn=bundle.getString("groupName");
         groupName=(TextView)view.findViewById(R.id.groupName);
         groupName.setText(gn+"'s calendar");
@@ -107,9 +112,7 @@ public class GroupCalendarFragment extends Fragment {
                 ((MainActivity)getActivity()).replaceFragment(new AddScheduleFragment(),result);
             }
         });
-        fstore = FirebaseFirestore.getInstance();
-        eventdates = new ArrayList<>();
-        Uid = ((MainActivity)getActivity()).userId();
+
 
         DocumentReference docRef = fstore.collection("GroupEvent").document("Gname"+gn);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -143,7 +146,7 @@ public class GroupCalendarFragment extends Fragment {
             }
         });
 
-        for(int i=0;i<memberList.size();i++){
+        for(int i=0;i<memberall.size();i++){
             int t= i;
             DocumentReference a = fstore.collection("GroupEvent").document("Gname"+gn);
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -154,7 +157,7 @@ public class GroupCalendarFragment extends Fragment {
                         DocumentSnapshot document = task.getResult();
                         //all exists
                         if (document.exists()) {
-                            DocumentReference docRef = fstore.collection("Adates").document("all"+memberList.get(t));
+                            DocumentReference docRef = fstore.collection("Adates").document("all"+memberall.get(t));
                             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @RequiresApi(api = Build.VERSION_CODES.O)
                                 @Override
@@ -192,6 +195,8 @@ public class GroupCalendarFragment extends Fragment {
                 }
             });
         }
+
+
 
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
