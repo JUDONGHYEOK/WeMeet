@@ -109,7 +109,7 @@ public class AddScheduleFragment extends Fragment {
                 int day =sday;
 
                 DatePickerDialog dialog = new DatePickerDialog(
-                        getContext(),android.R.style.Theme_Holo_Dialog_MinWidth, mDateSetListener, year, month, day);
+                        getContext(),android.R.style.Theme_Holo_Dialog_MinWidth, mDateSetListener, year, month-1, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
             }
@@ -185,7 +185,7 @@ public class AddScheduleFragment extends Fragment {
         eventform.setHint("제목");
         addEvent = (Button) rootView.findViewById(R.id.ok_btn);
 
-        DocumentReference dateRef = fStore.collection("Adates").document("all");
+        DocumentReference dateRef = fStore.collection("Adates").document("all"+email);
 
         addEvent.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
@@ -215,7 +215,7 @@ public class AddScheduleFragment extends Fragment {
                     });
 
                     //Adates의 all 유무로 data 생성 및 update
-                    DocumentReference docRef = fStore.collection("Adates").document("all");
+                    DocumentReference docRef = fStore.collection("Adates").document("all"+email);
                     docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -233,7 +233,7 @@ public class AddScheduleFragment extends Fragment {
                                     Dmap.put("Eventdates", Arrays.asList(datedb));
                                     Dmap.put("DUser_Email", email);
 
-                                    fStore.collection("Adates").document("all")
+                                    fStore.collection("Adates").document("all"+email)
                                             .set(Dmap)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
@@ -285,7 +285,7 @@ public class AddScheduleFragment extends Fragment {
                     });
 
                     //Adates의 all 유무로 data 생성 및 update
-                    DocumentReference docRef = fStore.collection("Adates").document("all");
+                    DocumentReference docRef = fStore.collection("Adates").document("all"+email);
                     docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -303,7 +303,7 @@ public class AddScheduleFragment extends Fragment {
                                     Dmap.put("Eventdates", Arrays.asList(datedb));
                                     Dmap.put("DUser_Email", email);
 
-                                    fStore.collection("Adates").document("all")
+                                    fStore.collection("Adates").document("all"+email)
                                             .set(Dmap)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override

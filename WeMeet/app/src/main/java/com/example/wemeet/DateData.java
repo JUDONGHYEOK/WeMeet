@@ -22,16 +22,8 @@ import java.util.Collection;
 public class DateData extends Thread {
     private static final String TAG = "!!DATA!!";
     ArrayList<CalendarDay> eventdate;
-    Collection<CalendarDay> emp;
     ArrayList<String> strdate;
-    String t;
-    ArrayList<String> eventdates;
-    String Uid;
 
-    ArrayList<CalendarDay> decodate;
-    private FirebaseFirestore fstore;
-
-    ArrayList<String> outdate;
 
     public DateData(ArrayList<String> strdate) {
         this.strdate = strdate;
@@ -40,7 +32,6 @@ public class DateData extends Thread {
    @RequiresApi(api = Build.VERSION_CODES.O)
 
    public ArrayList<CalendarDay> CalendardateChange () {
-
         ArrayList<CalendarDay> eventdate = new ArrayList<>();
 
         for(int i=0; i<strdate.size(); i++){
