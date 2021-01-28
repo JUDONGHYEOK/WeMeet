@@ -46,7 +46,7 @@ public class GroupCalendarFragment extends Fragment {
     String Uid;
     MaterialCalendarView materialCalendarView;
     Collection<CalendarDay> allday = new ArrayList<CalendarDay>(Arrays.asList(CalendarDay.from(2020,01,01)));
-    Collection<CalendarDay> decodate = new ArrayList<CalendarDay>(Arrays.asList(CalendarDay.from(2021,01,01)));;
+    Collection<CalendarDay> decodate = new ArrayList<CalendarDay>(Arrays.asList(CalendarDay.from(1990,01,01)));;
     private FirebaseFirestore fstore;
 
     @Override
@@ -54,7 +54,21 @@ public class GroupCalendarFragment extends Fragment {
         super.onCreate(savedInstanceState);
         for(int i=1;i<32;i++){
             allday.add(CalendarDay.from(2021,01,i));
-
+            allday.add(CalendarDay.from(2021,03,i));
+            allday.add(CalendarDay.from(2021,05,i));
+            allday.add(CalendarDay.from(2021,07,i));
+            allday.add(CalendarDay.from(2021,8,i));
+            allday.add(CalendarDay.from(2021,10,i));
+            allday.add(CalendarDay.from(2021,12,i));
+        }
+        for(int i=1;i<31;i++){
+            allday.add(CalendarDay.from(2021,04,i));
+            allday.add(CalendarDay.from(2021,06,i));
+            allday.add(CalendarDay.from(2021,9,i));
+            allday.add(CalendarDay.from(2021,11,i));
+        }
+        for(int i=1;i<29;i++) {
+            allday.add(CalendarDay.from(2021, 02, i));
         }
     }
 
@@ -67,17 +81,13 @@ public class GroupCalendarFragment extends Fragment {
         Uid = ((MainActivity)getActivity()).userId();
         Bundle bundle=getArguments();
         String objectId=bundle.getString("objectId");
-        ArrayList<String> memberList=bundle.getStringArrayList("memberList");
+
         ArrayList<String> memberall = bundle.getStringArrayList("memberList");
         memberall.add(Uid);
         String gn=bundle.getString("groupName");
         groupName=(TextView)view.findViewById(R.id.groupName);
         groupName.setText(gn+"'s calendar");
-        Iterator<String> iter=memberList.iterator();
-        while(iter.hasNext()){
-            Toast.makeText(getActivity(), iter.next(),Toast.LENGTH_SHORT).show();
-        }
-        Toast.makeText(getActivity(), objectId,Toast.LENGTH_SHORT).show();
+
 
 
         materialCalendarView = (MaterialCalendarView) view.findViewById(R.id.home_calendarView);

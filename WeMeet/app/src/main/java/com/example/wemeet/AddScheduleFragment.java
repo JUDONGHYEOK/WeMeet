@@ -169,7 +169,6 @@ public class AddScheduleFragment extends Fragment {
 
         //db update
         fStore = FirebaseFirestore.getInstance();
-
         eventform = (EditText) rootView.findViewById(R.id.event);
         eventform.setHint("제목");
         addEvent = (Button) rootView.findViewById(R.id.ok_btn);

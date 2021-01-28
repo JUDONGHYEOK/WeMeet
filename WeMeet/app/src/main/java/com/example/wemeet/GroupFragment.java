@@ -66,7 +66,6 @@ public class GroupFragment extends Fragment {
 
         try{
             db = FirebaseFirestore.getInstance();}catch(Exception e){
-            Toast.makeText(getActivity(), "연결 오류",Toast.LENGTH_LONG).show();
         }
         qr =db.collection("groups").orderBy("date")
                 .whereArrayContains("groupMembers", userId);
@@ -131,12 +130,11 @@ public class GroupFragment extends Fragment {
                 if(myId==null){
                     mem.add(userId);}
                 result.putString("objectId",item.getObjectId());
-                result.putStringArrayList("memberList",item.getMembers());
+                result.putStringArrayList("memberList",mem);
                 result.putString("groupName",item.getGroupName());
                 bottomSheet.setArguments(result);
             }
         });
-        Toast.makeText(getActivity(), userId,Toast.LENGTH_SHORT).show();
         Button button =(Button)view.findViewById(R.id.Button_addGroup);
         button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -159,7 +157,6 @@ public class GroupFragment extends Fragment {
 
     }
     private void initDataset() {
-         Toast.makeText(getContext(),"함수호출",Toast.LENGTH_LONG).show();
 
                 qr.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -210,7 +207,6 @@ public class GroupFragment extends Fragment {
                                 newData=new GroupData(Id,GroupName, members);
                                 if(!list.contains(newData)){
                                     list.add(newData);
-                                    Toast.makeText(getActivity(),"그룹추가",Toast.LENGTH_SHORT).show();
                                 }
                                 break;
                             case MODIFIED:
@@ -227,7 +223,6 @@ public class GroupFragment extends Fragment {
                                         break;
                                     }
                                 }
-                                Toast.makeText(getActivity(),GroupName,Toast.LENGTH_SHORT).show();
                                 list.remove(i);
                                 break;
                         }

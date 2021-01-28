@@ -21,7 +21,7 @@
             android:layout_marginTop="50dp"
             app:layout_constraintRight_toRightOf="parent"
             android:fontFamily="@font/futura_bold"
-            android:text="Group Calendar"
+            android:text="Group calendar"
             android:textColor="#000000"
             android:textSize="22dp"
             android:textStyle="bold"
@@ -82,8 +82,6 @@
             </LinearLayout>
         </ScrollView>
 
-
-
     </LinearLayout>
     <FrameLayout
         android:id="@+id/addGroup"
@@ -93,12 +91,3 @@
 
     </FrameLayout>
 </FrameLayout>
-
-    <!--<Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:background="@drawable/group_1"
-        app:layout_constraintTop_toTopOf="@+id/TextView_addGroup"
-
-        />-->
