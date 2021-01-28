@@ -1,6 +1,7 @@
 package com.example.wemeet;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.fragment.app.FragmentTransaction;
@@ -23,6 +25,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -34,9 +37,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static androidx.core.content.ContextCompat.getColor;
 
 public class GroupFragment extends Fragment {
 
@@ -49,6 +55,7 @@ public class GroupFragment extends Fragment {
     FirebaseFirestore db;
     Query qr;
     ListenerRegistration li;
+    ArrayList<String> myevent;
      public GroupFragment(){}
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,13 +66,15 @@ public class GroupFragment extends Fragment {
 
         try{
             db = FirebaseFirestore.getInstance();}catch(Exception e){
-            Toast.makeText(getActivity(), "연결 오류",Toast.LENGTH_LONG).show();
         }
         qr =db.collection("groups").orderBy("date")
                 .whereArrayContains("groupMembers", userId);
         listenToChildFragment();
         listenerAdd();
     }
+
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -96,9 +105,8 @@ public class GroupFragment extends Fragment {
                 if(myId==null){
                     mem.add(userId);}
                 result.putString("objectId",item.getObjectId());
-                result.putStringArrayList("memberList",mem);
+                result.putStringArrayList("memberList",item.getMembers());
                 result.putString("groupName",item.getGroupName());
-
                 ((MainActivity)getActivity()).replaceFragment(new GroupCalendarFragment(),result);
             }
         });
@@ -127,7 +135,6 @@ public class GroupFragment extends Fragment {
                 bottomSheet.setArguments(result);
             }
         });
-        Toast.makeText(getActivity(), userId,Toast.LENGTH_SHORT).show();
         Button button =(Button)view.findViewById(R.id.Button_addGroup);
         button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -144,14 +151,12 @@ public class GroupFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-         super.onDestroyView();
-         if(li!=null)
-             li.remove();
+        super.onDestroyView();
+        if(li!=null)
+            li.remove();
 
     }
-
     private void initDataset() {
-         Toast.makeText(getContext(),"함수호출",Toast.LENGTH_LONG).show();
 
                 qr.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -180,53 +185,51 @@ public class GroupFragment extends Fragment {
 
     private void listenerAdd() {
         if(li==null){
-        li= qr.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot snapshots,
-                                        @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w("TAG", "listen:error", e);
-                            return;
-                        }
-                        String GroupName;
-                        ArrayList<String>members;
-                        String Id;
-                        GroupData newData;
-                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
-                            switch (dc.getType()) {
-                                case ADDED:
-                                   GroupName= (String) dc.getDocument().getData().get("groupName");
-                                    members= (ArrayList<String>) dc.getDocument().getData().get("groupMembers");
-                                    Id=dc.getDocument().getId();
-                                    members.remove(userId);
-                                    newData=new GroupData(Id,GroupName, members);
-                                    if(!list.contains(newData)){
-                                        list.add(newData);
-                                        Toast.makeText(getActivity(),"그룹추가",Toast.LENGTH_SHORT).show();
-                                    }
-                                    break;
-                                case MODIFIED:
-                                    break;
-                                case REMOVED:
-                                    GroupName= (String) dc.getDocument().getData().get("groupName");
-                                    members= (ArrayList<String>) dc.getDocument().getData().get("groupMembers");
-                                    Id=dc.getDocument().getId();
-                                    members.remove(userId);
-                                    newData=new GroupData(Id,GroupName, members);
-                                    int i=0;
-                                    for(;i<list.size()-1;i++){
-                                        if(list.get(i).getObjectId()==Id){
-                                            break;
-                                        }
-                                    }
-                                    Toast.makeText(getActivity(),GroupName,Toast.LENGTH_SHORT).show();
-                                    list.remove(i);
-                                    break;
-                            }
-                        }
-                        adapter.notifyDataSetChanged();
+            li= qr.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot snapshots,
+                                    @Nullable FirebaseFirestoreException e) {
+                    if (e != null) {
+                        Log.w("TAG", "listen:error", e);
+                        return;
                     }
-                });
+                    String GroupName;
+                    ArrayList<String>members;
+                    String Id;
+                    GroupData newData;
+                    for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                        switch (dc.getType()) {
+                            case ADDED:
+                                GroupName= (String) dc.getDocument().getData().get("groupName");
+                                members= (ArrayList<String>) dc.getDocument().getData().get("groupMembers");
+                                Id=dc.getDocument().getId();
+                                members.remove(userId);
+                                newData=new GroupData(Id,GroupName, members);
+                                if(!list.contains(newData)){
+                                    list.add(newData);
+                                }
+                                break;
+                            case MODIFIED:
+                                break;
+                            case REMOVED:
+                                GroupName= (String) dc.getDocument().getData().get("groupName");
+                                members= (ArrayList<String>) dc.getDocument().getData().get("groupMembers");
+                                Id=dc.getDocument().getId();
+                                members.remove(userId);
+                                newData=new GroupData(Id,GroupName, members);
+                                int i=0;
+                                for(;i<list.size()-1;i++){
+                                    if(list.get(i).getObjectId()==Id){
+                                        break;
+                                    }
+                                }
+                                list.remove(i);
+                                break;
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+            });
         }
 
     }
@@ -240,6 +243,44 @@ public class GroupFragment extends Fragment {
                         ArrayList<String> member=bundle.getStringArrayList("Members");
                         submitGroup(result,member);
                         member.remove(userId);
+
+                        DocumentReference docRef = db.collection("Adates").document("all"+userId);
+                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @RequiresApi(api = Build.VERSION_CODES.O)
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document.exists()) {
+                                        myevent = (ArrayList<String>) document.getData().get("Eventdates");
+                                        for(int i=0;i<myevent.size();i++){
+                                            Map<String, Object> Dmap = new HashMap<>();
+                                            Dmap.put("Eventdates", Arrays.asList(myevent.get(i)));
+
+                                            db.collection("GroupEvent").document("Gname"+result)
+                                                    .set(Dmap)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                        }
+                                                    });
+                                        }
+                                    } else {
+                                    }
+                                } else {
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 });
         getChildFragmentManager()

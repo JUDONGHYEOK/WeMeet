@@ -8,22 +8,18 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 
-public class DateData {
-    private static final String TAG = "!!DATA!!";
-    ArrayList<CalendarDay> eventdate;
-    Collection<CalendarDay> emp;
+public class DateData extends Thread {
     ArrayList<String> strdate;
-    String t;
+
 
     public DateData(ArrayList<String> strdate) {
         this.strdate = strdate;
     }
 
    @RequiresApi(api = Build.VERSION_CODES.O)
-   public ArrayList<CalendarDay> CalendardateChange (ArrayList<String> strdate) {
-        this.strdate = strdate;
+
+   public ArrayList<CalendarDay> CalendardateChange () {
         ArrayList<CalendarDay> eventdate = new ArrayList<>();
 
         for(int i=0; i<strdate.size(); i++){
@@ -36,5 +32,4 @@ public class DateData {
         }
         return eventdate;
     }
-
 }

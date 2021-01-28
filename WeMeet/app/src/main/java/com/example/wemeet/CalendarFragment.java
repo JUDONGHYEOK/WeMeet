@@ -1,5 +1,6 @@
 package com.example.wemeet;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -21,16 +21,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collection;
 
 import static androidx.core.content.ContextCompat.getColor;
@@ -38,21 +34,14 @@ import static androidx.core.content.ContextCompat.getColor;
 public class CalendarFragment extends Fragment {
     private static final String TAG = "homecalendar";
 
-    AddScheduleFragment addschedule;
-
     int syear, smonth, sday;
-    int ayear, amonth, aday;
-
     ArrayList<String> eventdates;
     String Uid;
-
-    Collection<CalendarDay> markdate = new ArrayList<>(Arrays.asList(CalendarDay.from(2020,01,01)));
-    ArrayList<CalendarDay> decodate = new ArrayList<CalendarDay>(Arrays.asList(CalendarDay.from(2021,01,01)));;
-
+    MaterialCalendarView materialCalendarView;
+    Collection<CalendarDay> decodate = new ArrayList<CalendarDay>(Arrays.asList(CalendarDay.from(2021,01,01)));;
     private FirebaseFirestore fstore;
 
 
-    //일정이 추가된 날짜 가져오기 -> 데이터베이스에서 가져오는 방법으로 해야할듯
     public void onCreate(@NonNull @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -60,10 +49,10 @@ public class CalendarFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
 
-        Log.d(TAG,"초기화"+decodate);
+        materialCalendarView = (MaterialCalendarView) view.findViewById(R.id.home_calendarView);
+        materialCalendarView.setSelectionColor(Color.BLACK);
+        materialCalendarView.setSelectedDate(CalendarDay.today());
 
-        addschedule = new AddScheduleFragment();
-        MaterialCalendarView materialCalendarView = (MaterialCalendarView) view.findViewById(R.id.home_calendarView);
         ImageButton addButton = (ImageButton) view.findViewById(R.id.okbotton);
         addButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -73,42 +62,29 @@ public class CalendarFragment extends Fragment {
                 result.putInt("keymonth", smonth);
                 result.putInt("keyday", sday);
                 ((MainActivity)getActivity()).replaceFragment(new AddScheduleFragment(),result);
-
-
-
-
-                //MainActivity mainactivity = (MainActivity) getActivity();
-                //mainactivity.FragmentChange(0);
             }
         });
-
         fstore = FirebaseFirestore.getInstance();
         eventdates = new ArrayList<>();
         Uid = ((MainActivity)getActivity()).userId();
 
-        DocumentReference docRef = fstore.collection("Adates").document("all");
-
+        DocumentReference docRef = fstore.collection("Adates").document("all"+Uid);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                    //all 이 있을 때
+
+                    //all exists
                     if (document.exists()) {
-
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-
                         ArrayList<String> strdates = (ArrayList<String>) document.getData().get("Eventdates");
-
+                        //string -> CalendarDay
                         DateData st = new DateData(strdates);
+                        decodate = st.CalendardateChange();
 
-                        decodate = st.CalendardateChange(strdates);
-
-                        Log.d(TAG, "if문 안에서" + decodate);
-                        markdate.addAll(decodate);
-                        materialCalendarView.addDecorator(new DateDecorator(getActivity(), getColor(getActivity(), R.color.black), markdate));
-                        //all 없을  때
+                        materialCalendarView.addDecorator(new DateDecorator(getActivity(), getColor(getActivity(), R.color.black), decodate));
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -119,40 +95,24 @@ public class CalendarFragment extends Fragment {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d(TAG,"실패 "+ decodate);
+                Log.d(TAG,"error "+ decodate);
                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
-        Log.d(TAG,"create 안에서 "+ decodate);
+        Log.d(TAG,"create "+ decodate);
 
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                //  Toast.makeText(getContext(), " 123"+date, Toast.LENGTH_LONG).show();
                 syear = date.getYear();
                 smonth = date.getMonth();
                 sday = date.getDay();
-                Toast.makeText(getContext(), syear + "?" + smonth + "?" + sday, Toast.LENGTH_LONG).show();
-
-                //선택 날짜 보내기
-             /*   Bundle result = new Bundle();
-                result.putInt("keyyear", syear);
-                result.putInt("keymonth", smonth);
-                result.putInt("keyday", sday);*/
-                //getParentFragmentManager().setFragmentResult("requestKey", result);
             }
         });
 
-        //  Collection<CalendarDay> eventslist = new ArrayList<>();
-        //eventslist.add(CalendarDay.today());
-        //eventslist.add(CalendarDay.from(2020,01,01));
-        // materialCalendarView.addDecorator(new DateDecorator(getActivity(), getColor(getActivity(), R.color.black), eventslist));
-        Log.d(TAG,"표시 전 "+ decodate);
-
-        Log.d(TAG,"표시 후 "+ decodate);
-
-
         return view;
     }
+
 }
+

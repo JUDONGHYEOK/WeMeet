@@ -1,6 +1,8 @@
 package com.example.wemeet;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.animation.Animation;
@@ -16,6 +18,9 @@ public class SplashActivity extends AppCompatActivity {
     @Override
 protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+        if(Build.VERSION.SDK_INT >= 21){
+            getWindow().setStatusBarColor(Color.WHITE);
+        }
     setContentView(R.layout.splash_);
     anim= AnimationUtils.loadAnimation(this,R.anim.anim_splash);
     ImageView imageView=(ImageView)findViewById(R.id.imageView2);

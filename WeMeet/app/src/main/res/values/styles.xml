@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- change color of switch -->
+    <style name="mySwitch">
+        <item name="android:colorControlActivated">@color/gray</item>
+    </style>
+</resources>
