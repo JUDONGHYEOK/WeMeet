@@ -89,11 +89,12 @@ public class GroupCalendarFragment extends Fragment {
                     materialCalendarView.addDecorator(new DateDecoratorDefault(getActivity(),getColor(getActivity(),R.color.gray2),allday));
                     materialCalendarView.addDecorator(new DateDecorator(getActivity(), getColor(getActivity(), R.color.black), decodate));
                 }
-                else materialCalendarView.addDecorator(new DateDecoratorDefault(getActivity(),getColor(getActivity(),R.color.white),allday));
-                materialCalendarView.addDecorator(new DateDecorator(getActivity(), getColor(getActivity(), R.color.black), decodate));
+                else{
+                    materialCalendarView.addDecorator(new DateDecoratorDefault(getActivity(),getColor(getActivity(),R.color.white),allday));
+                    materialCalendarView.addDecorator(new DateDecorator(getActivity(), getColor(getActivity(), R.color.black), decodate));
+                }
             }
         });
-
 
         ImageButton addButton = (ImageButton) view.findViewById(R.id.plus);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +119,7 @@ public class GroupCalendarFragment extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
 
-                    //all exists
+                    //all+eamil exists
                     if (document.exists()) {
                         Log.d("그룹달력", "DocumentSnapshot data: " + document.getData());
                         ArrayList<String> strdates = (ArrayList<String>) document.getData().get("Eventdates");
@@ -191,7 +192,6 @@ public class GroupCalendarFragment extends Fragment {
                 }
             });
         }
-
 
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override

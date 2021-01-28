@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +19,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -38,7 +36,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +48,6 @@ public class AddScheduleFragment extends Fragment {
     private Button addEvent;
     private Button backthome;
     private FirebaseFirestore fStore;
-
 
     private TextView showdate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
@@ -68,14 +64,7 @@ public class AddScheduleFragment extends Fragment {
 
     Map<String, Object> events = new HashMap<>();
 
-
-    public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
-
-
     int syear, smonth, sday;
-
-
-    public AddScheduleFragment(){}
 
     public void onCreate(@NonNull @Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -189,7 +178,7 @@ public class AddScheduleFragment extends Fragment {
 
         addEvent.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
-                //제목 없을때
+
                 String ti = eventform.getText().toString();
                 if(ti.trim().isEmpty()&&datedb != null){
 
@@ -214,20 +203,16 @@ public class AddScheduleFragment extends Fragment {
                         }
                     });
 
-                    //Adates의 all 유무로 data 생성 및 update
                     DocumentReference docRef = fStore.collection("Adates").document("all"+email);
                     docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.isSuccessful()) {
                                 DocumentSnapshot document = task.getResult();
-                                //all 이 있을 때
                                 if (document.exists()) {
                                     dateRef.update("Eventdates", FieldValue.arrayUnion(datedb));
                                     Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
-
-                                 //all 없을  때
                                 } else {
                                     Map<String, Object> Dmap = new HashMap<>();
                                     Dmap.put("Eventdates", Arrays.asList(datedb));
@@ -254,13 +239,9 @@ public class AddScheduleFragment extends Fragment {
                             }
                         }
                     });
-
-                    //확인시 홈화면으로
                     MainActivity mainactivity = (MainActivity) getActivity();
                     mainactivity.FragmentChange(1);
-
                 }
-                //제목 있을 때
                 else if(!ti.trim().isEmpty()&&datedb != null){
                     String title = eventform.getText().toString();
                     Map<String, String> Eventsmap = new HashMap<>();
@@ -284,20 +265,17 @@ public class AddScheduleFragment extends Fragment {
                         }
                     });
 
-                    //Adates의 all 유무로 data 생성 및 update
                     DocumentReference docRef = fStore.collection("Adates").document("all"+email);
                     docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.isSuccessful()) {
                                 DocumentSnapshot document = task.getResult();
-                                //all 이 있을 때
+
                                 if (document.exists()) {
                                     dateRef.update("Eventdates", FieldValue.arrayUnion(datedb));
                                     Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
-
-                                    //all 없을  때
                                 } else {
                                     Map<String, Object> Dmap = new HashMap<>();
                                     Dmap.put("Eventdates", Arrays.asList(datedb));
@@ -325,19 +303,17 @@ public class AddScheduleFragment extends Fragment {
                         }
                     });
 
-                    //확인시 홈화면으로
                     MainActivity mainactivity = (MainActivity) getActivity();
                     mainactivity.FragmentChange(1);
 
                 }
-                //날짜 없을 시 작동
+
                 else if(datedb == null){
                     Toast.makeText(getActivity(),"날짜를 선택하세요",Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        //취소시 홈화면으로
         backthome = (Button) rootView.findViewById(R.id.cancle_btn);
         backthome.setOnClickListener(new View.OnClickListener() {
             public void onClick(View vi){
@@ -345,7 +321,6 @@ public class AddScheduleFragment extends Fragment {
                 mainactivity.FragmentChange(1);
             }
         });
-
     return rootView;
     }
 }

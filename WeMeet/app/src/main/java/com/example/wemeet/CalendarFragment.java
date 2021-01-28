@@ -1,6 +1,5 @@
 package com.example.wemeet;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,7 +21,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.gson.internal.$Gson$Preconditions;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -30,7 +28,6 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 
 import static androidx.core.content.ContextCompat.getColor;
 
@@ -47,8 +44,6 @@ public class CalendarFragment extends Fragment {
 
     public void onCreate(@NonNull @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -56,7 +51,6 @@ public class CalendarFragment extends Fragment {
 
         materialCalendarView = (MaterialCalendarView) view.findViewById(R.id.home_calendarView);
         materialCalendarView.setSelectionColor(Color.BLACK);
-
         materialCalendarView.setSelectedDate(CalendarDay.today());
 
         ImageButton addButton = (ImageButton) view.findViewById(R.id.okbotton);
