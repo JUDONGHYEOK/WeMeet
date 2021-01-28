@@ -46,6 +46,7 @@ public class GroupCalendarFragment extends Fragment {
     ArrayList<String> groupevent;
     String Uid;
     MaterialCalendarView materialCalendarView;
+    Collection<CalendarDay> allday = new ArrayList<CalendarDay>(Arrays.asList(CalendarDay.from(2021,01,24),CalendarDay.from(2021,01,25),CalendarDay.from(2021,01,26),CalendarDay.from(2021,01,27),CalendarDay.from(2021,01,28),CalendarDay.from(2021,01,29),CalendarDay.from(2021,01,30)));
     Collection<CalendarDay> decodate = new ArrayList<CalendarDay>(Arrays.asList(CalendarDay.from(2021,01,01)));;
     private FirebaseFirestore fstore;
 
@@ -73,7 +74,6 @@ public class GroupCalendarFragment extends Fragment {
 
         materialCalendarView = (MaterialCalendarView) view.findViewById(R.id.home_calendarView);
         materialCalendarView.setSelectionColor(Color.BLACK);
-
         materialCalendarView.setSelectedDate(CalendarDay.today());
 
         ImageButton addButton = (ImageButton) view.findViewById(R.id.plus);
@@ -172,9 +172,6 @@ public class GroupCalendarFragment extends Fragment {
                 }
             });
         }
-
-
-
 
 
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
