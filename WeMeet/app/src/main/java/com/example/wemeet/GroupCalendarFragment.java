@@ -107,7 +107,7 @@ public class GroupCalendarFragment extends Fragment {
                         DateData st = new DateData(strdates);
                         decodate = st.CalendardateChange();
 
-                        materialCalendarView.addDecorator(new DateDecorator(getActivity(), getColor(getActivity(), R.color.black), decodate));
+                        materialCalendarView.addDecorator(new DateDecorator(getActivity(), getColor(getActivity(), R.color.gray), decodate));
                     } else {
                         Log.d("그룹달력", "No such document");
                     }
