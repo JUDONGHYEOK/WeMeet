@@ -7,7 +7,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +20,6 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -31,9 +32,7 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import static androidx.core.content.ContextCompat.getColor;
 
@@ -46,13 +45,17 @@ public class GroupCalendarFragment extends Fragment {
     ArrayList<String> groupevent;
     String Uid;
     MaterialCalendarView materialCalendarView;
-    Collection<CalendarDay> allday = new ArrayList<CalendarDay>(Arrays.asList(CalendarDay.from(2021,01,24),CalendarDay.from(2021,01,25),CalendarDay.from(2021,01,26),CalendarDay.from(2021,01,27),CalendarDay.from(2021,01,28),CalendarDay.from(2021,01,29),CalendarDay.from(2021,01,30)));
+    //Collection<CalendarDay> allday = new ArrayList<CalendarDay>(Arrays.asList(CalendarDay.from(2021,01,24), CalendarDay.from(2021,01,25),CalendarDay.from(2021,01,26),CalendarDay.from(2021,01,27),CalendarDay.from(2021,01,28),CalendarDay.from(2021,01,29),CalendarDay.from(2021,01,30)));
+    Collection<CalendarDay> allday = new ArrayList<CalendarDay>(Arrays.asList(CalendarDay.from(2020,01,01)));
     Collection<CalendarDay> decodate = new ArrayList<CalendarDay>(Arrays.asList(CalendarDay.from(2021,01,01)));;
     private FirebaseFirestore fstore;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        for(int i=1;i<32;i++){
+            allday.add(CalendarDay.from(2021,01,i));
+        }
     }
 
     @Nullable
@@ -75,6 +78,22 @@ public class GroupCalendarFragment extends Fragment {
         materialCalendarView = (MaterialCalendarView) view.findViewById(R.id.home_calendarView);
         materialCalendarView.setSelectionColor(Color.BLACK);
         materialCalendarView.setSelectedDate(CalendarDay.today());
+        allday.removeAll(decodate);
+
+        Switch swit = (Switch) view.findViewById(R.id.switch1);
+        swit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked ==true){
+                    allday.removeAll(decodate);
+                    materialCalendarView.addDecorator(new DateDecoratorDefault(getActivity(),getColor(getActivity(),R.color.gray2),allday));
+                    materialCalendarView.addDecorator(new DateDecorator(getActivity(), getColor(getActivity(), R.color.black), decodate));
+                }
+                else materialCalendarView.addDecorator(new DateDecoratorDefault(getActivity(),getColor(getActivity(),R.color.white),allday));
+                materialCalendarView.addDecorator(new DateDecorator(getActivity(), getColor(getActivity(), R.color.black), decodate));
+            }
+        });
+
 
         ImageButton addButton = (ImageButton) view.findViewById(R.id.plus);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +126,7 @@ public class GroupCalendarFragment extends Fragment {
                         DateData st = new DateData(strdates);
                         decodate = st.CalendardateChange();
 
-                        materialCalendarView.addDecorator(new DateDecorator(getActivity(), getColor(getActivity(), R.color.gray), decodate));
+                        materialCalendarView.addDecorator(new DateDecorator(getActivity(), getColor(getActivity(), R.color.black), decodate));
                     } else {
                         Log.d("그룹달력", "No such document");
                     }
@@ -184,17 +203,7 @@ public class GroupCalendarFragment extends Fragment {
         });
 
 
-
         return view;
-
-
-
-
-
-
-
-
-
 
     }
 
