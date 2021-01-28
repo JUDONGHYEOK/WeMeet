@@ -84,6 +84,8 @@ public class GroupFragment extends Fragment {
             public void onItemClick(GroupAdapter.ViewHolder holder, View view, int position) {
                 GroupData item=adapter.getItem(position);
                 Bundle result = new Bundle();
+                ArrayList<String> mem=new ArrayList<>();
+                mem.addAll(item.getMembers());
                 String myId=null;
                 for(String id:item.getMembers()){
                     if(id.equals(userId)){
@@ -92,9 +94,9 @@ public class GroupFragment extends Fragment {
                     }
                 }
                 if(myId==null){
-                    item.getMembers().add(0,userId);}
+                    mem.add(userId);}
                 result.putString("objectId",item.getObjectId());
-                result.putStringArrayList("memberList",item.getMembers());
+                result.putStringArrayList("memberList",mem);
                 result.putString("groupName",item.getGroupName());
 
                 ((MainActivity)getActivity()).replaceFragment(new GroupCalendarFragment(),result);
@@ -107,6 +109,8 @@ public class GroupFragment extends Fragment {
                 GroupCheckDialog bottomSheet=new GroupCheckDialog();
                 bottomSheet.show(getChildFragmentManager(),"Tag");
                 GroupData item=adapter.getItem(position);
+                ArrayList<String> mem=new ArrayList<>();
+                mem.addAll(item.getMembers());
                 Bundle result = new Bundle();
                 String myId=null;
                 for(String id:item.getMembers()){
@@ -116,9 +120,9 @@ public class GroupFragment extends Fragment {
                     }
                 }
                 if(myId==null){
-                item.getMembers().add(0,userId);}
+                    mem.add(userId);}
                 result.putString("objectId",item.getObjectId());
-                result.putStringArrayList("memberList",item.getMembers());
+                result.putStringArrayList("memberList",mem);
                 result.putString("groupName",item.getGroupName());
                 bottomSheet.setArguments(result);
             }

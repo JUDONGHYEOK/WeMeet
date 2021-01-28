@@ -91,6 +91,7 @@ public class GroupCheckDialog extends BottomSheetDialogFragment {
                             })
                             .setCancelable(false)
                             .show();
+
                 }
             });
             return view;

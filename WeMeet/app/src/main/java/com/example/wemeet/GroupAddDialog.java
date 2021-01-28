@@ -55,6 +55,7 @@ public class GroupAddDialog extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 view.setVisibility(View.INVISIBLE);
+                dismiss();
             }
         });
         add.setOnClickListener(new View.OnClickListener(){
