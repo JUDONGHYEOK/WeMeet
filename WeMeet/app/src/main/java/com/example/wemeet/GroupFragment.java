@@ -66,12 +66,6 @@ public class GroupFragment extends Fragment {
         listenToChildFragment();
         listenerAdd();
     }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -143,6 +137,15 @@ public class GroupFragment extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onDestroyView() {
+         super.onDestroyView();
+         if(li!=null)
+             li.remove();
+
+    }
+
     private void initDataset() {
          Toast.makeText(getContext(),"함수호출",Toast.LENGTH_LONG).show();
 
@@ -171,15 +174,9 @@ public class GroupFragment extends Fragment {
 
     }
 
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
     private void listenerAdd() {
         if(li==null){
-        qr.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        li= qr.addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot snapshots,
                                         @Nullable FirebaseFirestoreException e) {
