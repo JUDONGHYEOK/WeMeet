@@ -37,17 +37,11 @@ import static androidx.core.content.ContextCompat.getColor;
 public class CalendarFragment extends Fragment {
     private static final String TAG = "homecalendar";
 
-    private Context context;
-    private HashSet<CalendarDay> dates;
-
     int syear, smonth, sday;
-
     ArrayList<String> eventdates;
     String Uid;
     MaterialCalendarView materialCalendarView;
-
     Collection<CalendarDay> decodate = new ArrayList<CalendarDay>(Arrays.asList(CalendarDay.from(2021,01,01)));;
-
     private FirebaseFirestore fstore;
 
 
