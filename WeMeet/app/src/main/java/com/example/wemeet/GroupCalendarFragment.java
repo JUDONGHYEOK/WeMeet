@@ -18,9 +18,11 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -29,7 +31,9 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import static androidx.core.content.ContextCompat.getColor;
 
@@ -39,6 +43,7 @@ public class GroupCalendarFragment extends Fragment {
     View view;
     int syear, smonth, sday;
     ArrayList<String> eventdates;
+    ArrayList<String> groupevent;
     String Uid;
     MaterialCalendarView materialCalendarView;
     Collection<CalendarDay> decodate = new ArrayList<CalendarDay>(Arrays.asList(CalendarDay.from(2021,01,01)));;
@@ -86,7 +91,7 @@ public class GroupCalendarFragment extends Fragment {
         eventdates = new ArrayList<>();
         Uid = ((MainActivity)getActivity()).userId();
 
-        DocumentReference docRef = fstore.collection("Adates").document("all"+Uid);
+        DocumentReference docRef = fstore.collection("GroupEvent").document("Gname"+gn);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -118,8 +123,59 @@ public class GroupCalendarFragment extends Fragment {
             }
         });
 
-        Log.d("그룹달력","create "+ decodate);
+        for(int i=0;i<memberList.size();i++){
+            DocumentReference a = fstore.collection("GroupEvent").document("Gname"+gn);
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        //all exists
+                        if (document.exists()) {
+                            DocumentReference docRef = fstore.collection("Adates").document("all"+Uid);
+                            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @RequiresApi(api = Build.VERSION_CODES.O)
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document.exists()) {
 
+                                            groupevent = (ArrayList<String>) document.getData().get("Eventdates");
+                                            //string ->
+                                            for(int i=0;i<groupevent.size();i++){
+                                                a.update("Eventdates", FieldValue.arrayUnion(groupevent.get(i)));
+                                            }
+                                        } else {
+                                        }
+                                    } else {
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                        } else {
+                        }
+                    } else {
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+
+
+
+        
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {

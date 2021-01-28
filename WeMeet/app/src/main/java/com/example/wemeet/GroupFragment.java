@@ -1,6 +1,7 @@
 package com.example.wemeet;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.fragment.app.FragmentTransaction;
@@ -23,6 +25,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -33,9 +36,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static androidx.core.content.ContextCompat.getColor;
 
 public class GroupFragment extends Fragment {
 
@@ -47,6 +53,7 @@ public class GroupFragment extends Fragment {
     String userId;
     FirebaseFirestore db;
     Query qr;
+    ArrayList<String> myevent;
      public GroupFragment(){}
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -217,6 +224,44 @@ public class GroupFragment extends Fragment {
                         ArrayList<String> member=bundle.getStringArrayList("Members");
                         submitGroup(result,member);
                         member.remove(userId);
+
+                        DocumentReference docRef = db.collection("Adates").document("all"+userId);
+                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @RequiresApi(api = Build.VERSION_CODES.O)
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document.exists()) {
+                                        myevent = (ArrayList<String>) document.getData().get("Eventdates");
+                                        for(int i=0;i<myevent.size();i++){
+                                            Map<String, Object> Dmap = new HashMap<>();
+                                            Dmap.put("Eventdates", Arrays.asList(myevent.get(i)));
+
+                                            db.collection("GroupEvent").document("Gname"+result)
+                                                    .set(Dmap)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                        }
+                                                    });
+                                        }
+                                    } else {
+                                    }
+                                } else {
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 });
     }

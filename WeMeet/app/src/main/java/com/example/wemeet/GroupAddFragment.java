@@ -73,7 +73,6 @@ public class GroupAddFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-
                 String gn=groupName.getText().toString();
                 if(!gn.trim().isEmpty()&&!list.isEmpty()){
                 ArrayList<String> members=new ArrayList<String>();
