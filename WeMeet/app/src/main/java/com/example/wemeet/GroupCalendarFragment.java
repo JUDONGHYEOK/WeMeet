@@ -124,6 +124,7 @@ public class GroupCalendarFragment extends Fragment {
         });
 
         for(int i=0;i<memberList.size();i++){
+            int t= i;
             DocumentReference a = fstore.collection("GroupEvent").document("Gname"+gn);
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -133,7 +134,7 @@ public class GroupCalendarFragment extends Fragment {
                         DocumentSnapshot document = task.getResult();
                         //all exists
                         if (document.exists()) {
-                            DocumentReference docRef = fstore.collection("Adates").document("all"+Uid);
+                            DocumentReference docRef = fstore.collection("Adates").document("all"+memberList.get(t));
                             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @RequiresApi(api = Build.VERSION_CODES.O)
                                 @Override
@@ -175,7 +176,7 @@ public class GroupCalendarFragment extends Fragment {
 
 
 
-        
+
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
