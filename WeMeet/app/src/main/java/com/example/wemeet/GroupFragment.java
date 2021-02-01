@@ -63,7 +63,6 @@ public class GroupFragment extends Fragment {
         list=new ArrayList<>();
         userId=((MainActivity)getActivity()).userId();
         li=null;
-
         try{
             db = FirebaseFirestore.getInstance();}catch(Exception e){
         }

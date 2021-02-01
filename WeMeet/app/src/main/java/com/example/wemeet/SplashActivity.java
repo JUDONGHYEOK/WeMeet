@@ -23,9 +23,9 @@ protected void onCreate(Bundle savedInstanceState) {
         }
     setContentView(R.layout.splash_);
     anim= AnimationUtils.loadAnimation(this,R.anim.anim_splash);
-    ImageView imageView=(ImageView)findViewById(R.id.imageView2);
+    ImageView logo=(ImageView)findViewById(R.id.imageView2);
 
-    imageView.startAnimation(anim);
+    logo.startAnimation(anim);
     Handler hd = new Handler();
     hd.postDelayed(new SplashHandler(), 3000); // 3000ms = 3초
 

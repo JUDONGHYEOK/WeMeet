@@ -28,7 +28,6 @@ public class GuidelineActivity extends FragmentActivity {
         }
 
         setContentView(R.layout.activity_guidelines_);
-
         mPager=findViewById(R.id.pager);
         mPager.setOffscreenPageLimit(3);
        ScreenSlidePagerAdapter pagerAdapter=new ScreenSlidePagerAdapter(this);
